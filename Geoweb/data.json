@@ -1,0 +1,18 @@
+{
+    "ultima_actualizacion": "06/11/2025 a las 22:46",
+    "resumen_maximo": "Riesgo M\u00e1ximo: M\u00e9xico (Peso) y Brasil (Real) (0.41)",
+    "top_dependencias": [
+        {
+            "nombre": "Oro (Refugio)",
+            "puntuacion_irdc": "0.16"
+        },
+        {
+            "nombre": "M\u00e9xico (Peso)",
+            "puntuacion_irdc": "0.08"
+        },
+        {
+            "nombre": "Brasil (Real)",
+            "puntuacion_irdc": "0.04"
+        }
+    ]
+}

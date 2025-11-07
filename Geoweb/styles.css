@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1a1a2e; /* Azul Oscuro (Serio) */
+    color: white;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffd700; /* Dorado para destacar */
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+}
+
+/* --- Botones --- */
+.btn-cta, .btn-hero, .btn-submit {
+    background-color: #e94560; /* Rojo/Rosa (CTA agresivo) */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.btn-cta:hover, .btn-hero:hover, .btn-submit:hover {
+    background-color: #d33a53;
+}
+
+/* --- Contenido Principal --- */
+main {
+    padding: 0 5%;
+}
+
+section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+#hero {
+    background: url('') no-repeat center center/cover;
+    color: white;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(26, 26, 46, 0.8);
+    background-blend-mode: multiply;
+}
+
+#hero h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+#hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.cta-mini {
+    margin-top: 15px;
+    font-style: italic;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+/* --- Características y Análisis --- */
+h2 {
+    color: #1a1a2e;
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.feature-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 300px;
+    text-align: left;
+}
+
+.feature-box h3 {
+    color: #e94560;
+    margin-top: 0;
+}
+
+#analisis {
+    background-color: #e5e8e7;
+}
+
+.analysis-point {
+    margin: 20px auto;
+    max-width: 700px;
+    text-align: left;
+    padding: 15px;
+    border-left: 4px solid #1a1a2e;
+}
+
+/* --- Formulario de Suscripción --- */
+#suscribir {
+    background-color: #1a1a2e;
+    color: white;
+}
+
+#suscribir input[type="email"] {
+    padding: 12px;
+    width: 300px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.btn-submit {
+    padding: 12px 25px;
+    font-size: 1em;
+}
+
+.price-info {
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #1a1a2e;
+    color: #aaa;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #333;
+}

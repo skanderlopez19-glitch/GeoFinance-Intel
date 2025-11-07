@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inteligencia Geo-Financiera Cuantificada | Análisis LATAM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">GEOFINANCE INTEL</div>
+        <nav>
+            <a href="#valor">Valor</a>
+            <a href="#analisis">Análisis</a>
+            <a href="#suscribir" class="btn-cta">Suscribirse</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Desciframos la Geopolítica que Mueve su Capital</h1>
+            <p>Obtenga el **Informe Estratégico Diario** de LATAM, impulsado por Python e Inteligencia Cuantitativa.</p>
+            <a href="#suscribir" class="btn-hero">Reciba el Informe Diario</a>
+            <p class="cta-mini">Automatizado y de Nivel Ejecutivo | **Próximo Envío: Mañana, 19:00 (Hora Local)**</p>
+        </section>
+
+        <section id="valor">
+            <h2>¿Por qué nuestro informe es Único?</h2>
+            <div class="features">
+                <div class="feature-box">
+                    <h3>📊 IRDC Cuantificado</h3>
+                    <p>Métrica exclusiva que mide el **riesgo real de dependencia** de su inversión a los choques de Petróleo, Cobre y el S&P 500.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🌎 Enfoque Geopolítico</h3>
+                    <p>Traducimos las decisiones de la FED, China y los bancos centrales en **conclusiones de inversión directa**, no solo en noticias.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🔒 Automatización Diaria</h3>
+                    <p>El informe se genera diariamente por **Python** y se entrega como un **PDF profesional** a su bandeja de entrada.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="analisis">
+            <h2>El Cerebro Detrás de la Inteligencia</h2>
+            <p>Nuestro modelo rompe el molde de los análisis tradicionales, ofreciendo juicio y precisión.</p>
+            <div class="analysis-point">
+                <h3>Juicio Estratégico</h3>
+                <p>El informe final revela: **"Invierta donde hay estabilidad (México) y Asegure donde hay riesgo (Oro)."**</p>
+            </div>
+            <div class="analysis-point">
+                <h3>Evidencia Visual</h3>
+                <p>Adjuntamos el **Mapa de Calor de Correlación** para que vea las dependencias (ROJO = Riesgo, AZUL = Cobertura).</p>
+            </div>
+        </section>
+
+        <section id="suscribir">
+            <h2>Suscríbase a la Inteligencia Cuantificada</h2>
+            <form action="[AQUÍ VA SU SERVIDOR DE SUSCRIPCIÓN]" method="POST">
+                <input type="email" placeholder="Su Correo Electrónico Ejecutivo" required>
+                <button type="submit" class="btn-submit">Recibir Acceso Premium</button>
+            </form>
+            <p class="price-info">Inicie con nuestra prueba gratuita por 7 días.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GeoFinance Intel. Análisis Automatizado.</p>
+    </footer>
+
+    <script>
+        // Función para leer el archivo JSON y actualizar el contenido
+        function actualizarContenido() {
+            // La función fetch intenta leer el archivo data.json que Python genera diariamente
+            fetch('GeoWeb/data.json') // Asegúrate de que esta ruta sea correcta si el JSON se guarda en GeoWeb
+                .then(response => {
+                    // Verifica si la respuesta es exitosa (código 200)
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 1. Actualizar el titular del riesgo (la línea debajo del botón principal)
+                    const ctaMini = document.querySelector('.cta-mini');
+                    if (ctaMini) {
+                        ctaMini.innerHTML = `🔥 ALERTA HOY: ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
+                    }
+
+                    // 2. Opcional: Mostrar dependencias en el cuerpo del informe
+                    // Si quieres mostrar más datos, aquí usarías data.top_dependencias
+                    console.log("Datos del JSON cargados y web actualizada.");
+                })
+                .catch(error => {
+                    console.error('Error al cargar o procesar datos JSON:', error);
+                    // Muestra un mensaje de error si el JSON no se ha generado aún
+                    const ctaMini = document.querySelector('.cta-mini');
+                    if (ctaMini) {
+                        ctaMini.innerHTML = `⚠️ Sistema de IA en inicio. Próximo Análisis: Mañana, 19:00 (Hora Local).`;
+                    }
+                });
+        }
+
+        // Ejecutar la función al cargar la página
+        window.onload = actualizarContenido;
+    </script>
+</body>
+</html>
