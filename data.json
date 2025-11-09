@@ -1,18 +1,23 @@
 {
-    "ultima_actualizacion": "09/11/2025 a las 11:03",
+    "ultima_actualizacion": "09/11/2025 a las 13:09",
     "resumen_maximo": "Riesgo M\u00e1ximo: M\u00e9xico (Peso) y Brasil (Real) (0.41)",
     "top_dependencias": [
         {
             "nombre": "Oro (Refugio)",
-            "puntuacion_irdc": "0.16"
+            "puntuacion_irdc": "0.12"
         },
         {
             "nombre": "M\u00e9xico (Peso)",
-            "puntuacion_irdc": "0.08"
+            "puntuacion_irdc": "0.09"
         },
         {
-            "nombre": "Brasil (Real)",
-            "puntuacion_irdc": "0.04"
+            "nombre": "Colombia (Peso)",
+            "puntuacion_irdc": "0.07"
+        },
+        {
+            "nombre": "Chile (Peso)",
+            "puntuacion_irdc": "0.06"
         }
-    ]
+    ],
+    "correlacion_minima": "M\u00e9xico (Peso) vs. Cobre Futuros (-0.12)"
 }
