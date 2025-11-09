@@ -1,162 +1,218 @@
-body {
-    font-family: Arial, sans-serif;
+/* --- VARIABLES Y RESET (Base de la Sala de Control) --- */
+:root {
+    --color-background-dark: #101010; /* Negro profundo para el fondo */
+    --color-surface-dark: #1f1f1f; /* Gris muy oscuro para módulos */
+    --color-text-light: #f0f0f0; /* Texto principal (blanco suave) */
+    --color-accent-primary: #ffc300; /* Amarillo/Dorado vibrante (Alerta/Premium) */
+    --color-alert-danger: #ff4500; /* Rojo/Naranja para CTA y Alertas Críticas */
+    --font-family: 'Inter', 'Roboto', Arial, sans-serif; /* Fuentes limpias y modernas */
+    --transition-speed: 0.3s;
+}
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #f4f7f6;
-    color: #333;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-background-dark);
+    color: var(--color-text-light);
     line-height: 1.6;
 }
 
+/* --- HEADER Y NAVEGACIÓN (Borde Acentuado) --- */
 header {
-    background-color: #1a1a2e; /* Azul Oscuro (Serio) */
-    color: white;
-    padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 5%;
+    background-color: var(--color-surface-dark);
+    border-bottom: 2px solid var(--color-accent-primary); /* Borde Dorado Táctico */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
     font-size: 1.8em;
-    font-weight: bold;
-    color: #ffd700; /* Dorado para destacar */
+    font-weight: 800; /* Extra bold */
+    color: var(--color-accent-primary);
+    letter-spacing: 1.5px;
 }
 
 nav a {
-    color: white;
+    color: var(--color-text-light);
     text-decoration: none;
-    margin-left: 25px;
-    font-weight: 500;
+    margin-left: 30px;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    transition: color var(--transition-speed);
 }
 
-/* --- Botones --- */
+nav a:hover {
+    color: var(--color-accent-primary);
+}
+
+/* --- Botones (Acento Agresivo) --- */
 .btn-cta, .btn-hero, .btn-submit {
-    background-color: #e94560; /* Rojo/Rosa (CTA agresivo) */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    background-color: var(--color-alert-danger);
+    color: var(--color-text-light);
+    padding: 12px 25px;
+    border-radius: 4px;
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: background-color var(--transition-speed);
     border: none;
     cursor: pointer;
     font-weight: bold;
     display: inline-block;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .btn-cta:hover, .btn-hero:hover, .btn-submit:hover {
-    background-color: #d33a53;
+    background-color: #e63946; /* Un rojo más oscuro en hover */
 }
 
 /* --- Contenido Principal --- */
 main {
-    padding: 0 5%;
+    padding-top: 0;
 }
 
 section {
-    padding: 60px 0;
+    padding: 100px 5%; /* Más espacio vertical para impacto */
     text-align: center;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
+h2 {
+    color: var(--color-accent-primary);
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+h3 {
+    font-size: 1.3em;
+    color: var(--color-accent-primary);
+    margin-bottom: 15px;
+}
+
+/* --- SECCIÓN HERO (El Dashboard Central) --- */
 #hero {
-    background: url('') no-repeat center center/cover;
-    color: white;
-    min-height: 500px;
+    background-color: var(--color-background-dark);
+    color: var(--color-text-light);
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(26, 26, 46, 0.8);
-    background-blend-mode: multiply;
+    border-bottom: 5px solid var(--color-accent-primary);
 }
 
 #hero h1 {
-    font-size: 3em;
-    margin-bottom: 10px;
+    font-size: 4em;
+    margin-bottom: 15px;
+    font-weight: 900;
+    letter-spacing: -1px;
 }
 
 #hero p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
+    font-size: 1.4em;
+    margin-bottom: 40px;
+    color: #ccc;
+    max-width: 800px;
 }
 
 .cta-mini {
-    margin-top: 15px;
-    font-style: italic;
-    font-size: 0.9em;
-    color: #ccc;
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-weight: 600;
+    font-size: 1.1em;
+    background-color: var(--color-surface-dark);
+    border: 2px solid var(--color-accent-primary); /* Marco de Alerta */
+    color: var(--color-text-light);
+    border-radius: 5px;
 }
 
-/* --- Características y Análisis --- */
-h2 {
-    color: #1a1a2e;
-    font-size: 2em;
-    margin-bottom: 40px;
+/* --- CARACTERÍSTICAS y MÓDULOS DE ANÁLISIS --- */
+#valor, #analisis, #fundamentos, #conflictos {
+    background-color: var(--color-background-dark);
 }
 
-.features {
+.features, .analysis-container {
     display: flex;
-    justify-content: space-around;
-    gap: 20px;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.feature-box {
-    background-color: white;
-    padding: 25px;
+.feature-box, .analysis-point {
+    background-color: var(--color-surface-dark);
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(255, 195, 0, 0.1); /* Sombra Premium */
     flex: 1;
-    max-width: 300px;
+    min-width: 300px;
     text-align: left;
+    transition: all var(--transition-speed);
+    border-left: 4px solid var(--color-alert-danger); /* Indicador de Riesgo */
 }
 
-.feature-box h3 {
-    color: #e94560;
-    margin-top: 0;
+.feature-box:hover, .analysis-point:hover {
+    transform: translateY(-8px);
+    border-left: 4px solid var(--color-accent-primary);
 }
 
-#analisis {
-    background-color: #e5e8e7;
+.feature-box p, .analysis-point p {
+    color: #b0b0b0;
 }
 
-.analysis-point {
-    margin: 20px auto;
-    max-width: 700px;
-    text-align: left;
-    padding: 15px;
-    border-left: 4px solid #1a1a2e;
+.small-text {
+    font-size: 0.9em;
+    color: #888;
 }
 
-/* --- Formulario de Suscripción --- */
+
+/* --- SECCIÓN SUSCRIBIR (Bloque de Compromiso) --- */
 #suscribir {
-    background-color: #1a1a2e;
-    color: white;
+    background-color: var(--color-surface-dark);
+    border-top: 4px solid var(--color-accent-primary);
+}
+
+#suscribir form {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
 }
 
 #suscribir input[type="email"] {
-    padding: 12px;
-    width: 300px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.btn-submit {
-    padding: 12px 25px;
-    font-size: 1em;
-}
-
-.price-info {
-    margin-top: 20px;
+    padding: 15px;
+    width: 400px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: var(--color-text-light);
     font-size: 1.1em;
 }
 
-/* --- Footer --- */
+.price-info {
+    margin-top: 25px;
+    color: var(--color-accent-primary);
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* --- FOOTER --- */
 footer {
-    background-color: #1a1a2e;
-    color: #aaa;
+    padding: 25px 0;
     text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #333;
+    background-color: #000000;
+    color: #555;
+    font-size: 0.9em;
 }

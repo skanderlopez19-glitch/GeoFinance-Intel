@@ -10,7 +10,8 @@
     <header>
         <div class="logo">GEOFINANCE INTEL</div>
         <nav>
-            <a href="#valor">Valor</a>
+            <a href="#fundamentos">Teoría</a>
+            <a href="#conflictos">Crisis</a>
             <a href="#analisis">Análisis</a>
             <a href="#suscribir" class="btn-cta">Suscribirse</a>
         </nav>
@@ -42,8 +43,35 @@
             </div>
         </section>
 
+        <section id="fundamentos">
+            <h2>📜 Fundamentos: Historia y Teoría del Poder</h2>
+            <p>El Científico Político Jefe explica el marco teórico: El destino financiero de la periferia siempre ha estado ligado a las potencias centrales.</p>
+            <div class="analysis-point">
+                <h3>Teoría de Sistemas-Mundo y la FED</h3>
+                <p>Analizamos cómo el modelo de Wallerstein se aplica a las finanzas modernas: **La política monetaria de EE. UU. es la ley no oficial de la región.**</p>
+            </div>
+            <div class="analysis-point">
+                <h3>El Origen del Riesgo</h3>
+                <p>Las decisiones de poder marítimo y terrestre (ej., la demanda de China o las sanciones) tienen un impacto cuantificable en sus activos LATAM.</p>
+            </div>
+            </section>
+
+        <section id="conflictos">
+            <h2>⚔️ Sala de Crisis: Análisis de Conflictos Globales</h2>
+            <p>Convertimos las zonas calientes en inteligencia de mercado. Estos conflictos tienen implicaciones directas en la volatilidad de sus *commodities*.</p>
+
+            <div class="analysis-point">
+                <h3>Impacto en Energía (Rusia/Ucrania)</h3>
+                <p>Juicio estratégico sobre cómo las tensiones en el suministro de energía afectan directamente el Petróleo WTI (CL=F) y el riesgo de inflación en LATAM.</p>
+            </div>
+            <div class="analysis-point">
+                <h3>Riesgo de Cadena de Suministro (Mar de China)</h3>
+                <p>Análisis del efecto de las tensiones marítimas en la demanda de cobre (HG=F) y la interdependencia económica de Chile y Perú con la demanda asiática.</p>
+            </div>
+            </section>
+
         <section id="analisis">
-            <h2>El Cerebro Detrás de la Inteligencia</h2>
+            <h2>📊 Inteligencia en Vivo: Data Estratégica LATAM</h2>
             <p>Nuestro modelo rompe el molde de los análisis tradicionales, ofreciendo juicio y precisión.</p>
 
             <div class="analysis-point" id="riesgo-hoy">
@@ -77,39 +105,29 @@
     </footer>
 
     <script>
-        // La ruta asume que el index.html está DENTRO de la misma carpeta que data.json
         const JSON_URL = 'data.json';
 
         function loadAnalysis() {
             fetch(JSON_URL)
                 .then(response => {
-                    // Verificación de respuesta
                     if (!response.ok) {
                         throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // Lógica para INSERTAR DATOS EN EL HTML (Manipulación del DOM)
-
-                    // 1. Actualizar la ALERTA en la sección HERO (Ejemplo: ALERTA HOY: Riesgo Máximo: USDMXN=X y USDBRL=X (0.41))
                     const ctaMini = document.querySelector('.cta-mini');
                     if (ctaMini) {
                         ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
                     }
 
-                    // 2. Mostrar la FECHA en la sección de Análisis
                     document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
-
-                    // 3. Mostrar el RESUMEN MÁXIMO en la sección de Análisis
                     document.getElementById('resumen-maximo-data').textContent = data.resumen_maximo;
 
                     console.log("✅ Datos de Análisis Cuantitativo cargados y web actualizada.");
                 })
                 .catch(error => {
                     console.error('❌ Error al cargar o procesar datos JSON:', error);
-
-                    // Mensaje de Fallo si el JSON no se ha generado o falla la carga
                     const ctaMini = document.querySelector('.cta-mini');
                     if (ctaMini) {
                         ctaMini.innerHTML = `⚠️ Sistema de IA en inicio. Próximo Análisis: Mañana, 19:00 (Hora Local).`;
@@ -119,7 +137,6 @@
                 });
         }
 
-        // Ejecutar la función cuando la página haya cargado completamente
         document.addEventListener('DOMContentLoaded', loadAnalysis);
     </script>
 </body>
