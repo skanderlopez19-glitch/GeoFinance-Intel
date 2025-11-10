@@ -132,26 +132,54 @@
 
             <div class="analysis-container" style="justify-content: space-between; flex-wrap: wrap; text-align: center;">
 
-                <div class="analysis-point" style="width: 30%; border: 2px solid var(--color-alert-danger);">
-                    <h3>🔥 Módulo de Contagio Mayor</h3>
-                    <p class="small-text">Correlación más alta detectada, impulsada por la liquidez del Núcleo.</p>
-                    <p id="resumen-maximo-data" style="font-size: 1.5em; font-family: var(--font-body); color: var(--color-alert-danger); margin: 20px 0;">Cargando...</p>
-                    <p class="small-text">Última actualización: <span id="fecha-actualizacion">...</span></p>
+                <div class="analysis-point" style="width: 30%; border: 3px solid var(--color-alert-danger); background-color: #1a0a0a;">
+                    <h3 style="color: var(--color-alert-danger);">ALERTA CRÍTICA: Bloque de Contagio</h3>
+                    <p class="small-text" style="font-size: 0.9em; color: #aaa; margin-top: 15px;">MÁXIMA CORRELACIÓN DETECTADA</p>
+
+                    <p id="resumen-maximo-data" style="font-family: var(--font-body); font-size: 2.2rem; font-weight: 700; color: var(--color-alert-danger); margin: 10px 0;">
+                        Cargando...
+                    </p>
+
+                    <p id="pares-afectados-data" style="font-size: 1.2em; color: #fff;">
+                        Cargando...
+                    </p>
+                    <p class="small-text" style="color: #666; margin-top: 20px;">[Driver: Liquidez del Núcleo]</p>
                 </div>
 
-                <div class="analysis-point" style="width: 30%; border: 2px solid var(--color-accent-primary);">
-                    <h3>🛡️ Oportunidad Estratégica</h3>
-                    <p class="small-text">Activo con la correlación más baja. Máxima eficiencia para la Cobertura.</p>
-                    <p id="correlacion-minima-data" style="font-size: 1.5em; font-family: var(--font-body); color: var(--color-accent-primary); margin: 20px 0;">Cargando...</p>
-                    <p class="small-text">Activo Refugio: **Oro (GC=F)**</p>
-                </div>
 
-                <div class="analysis-point" style="width: 30%;">
-                    <h3>Mapa de Dependencia IRDC</h3>
-                    <p class="small-text">Visualización de las dependencias totales frente al Núcleo y los Commodities.</p>
-                    <a href="informe_geopolitico_latest.pdf" target="_blank" style="color: var(--color-alert-danger); font-weight: bold; margin-top: 15px; display: block;">
-                        Ver Mapa de Calor y Análisis IRDC »
+                <div class="analysis-point" style="width: 30%; border: 2px solid var(--color-text-light); background-color: #141414;">
+                    <h3 style="color: var(--color-text-light);">ESTATUS: PULSO DEL SISTEMA</h3>
+
+                    <p style="font-size: 1.1em; color: var(--color-accent-primary); margin-top: 20px;">
+                        Última Matriz Auditada:
+                    </p>
+                    <p id="fecha-actualizacion" style="font-family: var(--font-body); font-size: 1.5em; font-weight: 700; color: #fff; margin-top: 5px;">
+                        Cargando...
+                    </p>
+
+                    <hr style="border-color: #333; margin: 25px 0;">
+
+                    <p style="font-size: 1.1em; color: var(--color-text-light);">
+                        Ver Mapa de Correlación:
+                    </p>
+                    <a href="informe_geopolitico_latest.pdf" target="_blank" style="color: var(--color-alert-danger); font-weight: bold; margin-top: 5px; display: block;">
+                        Abrir Archivo Táctico (IRDC) »
                     </a>
+                </div>
+
+
+                <div class="analysis-point" style="width: 30%; border: 3px solid var(--color-accent-primary); background-color: #1a1a0a;">
+                    <h3 style="color: var(--color-accent-primary);">ACCIÓN: Blindaje Estratégico</h3>
+                    <p class="small-text" style="color: #ccc; margin-top: 15px;">MÁXIMA EFICIENCIA PARA COBERTURA</p>
+
+                    <p id="correlacion-minima-data" style="font-family: var(--font-body); font-size: 2.2rem; font-weight: 700; color: var(--color-accent-primary); margin: 10px 0;">
+                        Cargando...
+                    </p>
+
+                    <p id="pares-cobertura-data" style="font-size: 1.2em; color: #fff;">
+                        Cargando...
+                    </p>
+                    <p class="small-text" style="color: #666; margin-top: 20px;">Refugio: **Oro (GC=F)**</p>
                 </div>
             </div>
         </section>
@@ -181,46 +209,67 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 1. Actualiza el CTA mini en la sección Hero (Top de la página)
+                    // --- PARSEO AVANZADO DE DATOS (Dividir texto y cifra) ---
+
+                    // Ejemplo Riesgo Máximo: "Riesgo Máximo: México (Peso) y Brasil (Real) (0.41)"
+                    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/); // Extrae la cifra (0.41)
+                    const maxCifra = maxMatch ? maxMatch[0] : 'N/A';
+                    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(maxCifra, '').trim();
+
+                    // Ejemplo Correlación Mínima: "México (Peso) vs. Cobre Futuros (-0.12)"
+                    const minMatch = data.correlacion_minima.match(/\((.*?)\)/); // Extrae la cifra (-0.12)
+                    const minCifra = minMatch ? minMatch[0] : 'N/A';
+                    const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(minCifra, '').trim();
+
+
+                    // 1. Actualiza el CTA mini en la sección Hero
                     const ctaMini = document.querySelector('.cta-mini');
                     if (ctaMini) {
                         ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
                     }
 
-                    // 2. Actualiza la fecha de la última actualización en la sección de Análisis
+                    // 2. Dashboard - Módulo Contagio Mayor
+                    document.getElementById('resumen-maximo-data').textContent = maxCifra;
+                    document.getElementById('pares-afectados-data').textContent = maxPares;
+
+                    // 3. Dashboard - Módulo Blindaje
+                    document.getElementById('correlacion-minima-data').textContent = minCifra;
+                    document.getElementById('pares-cobertura-data').textContent = minPares;
+
+                    // 4. Dashboard - Estaus (Fecha)
                     document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
 
-                    // 3. Mostrar el RIESGO MÁXIMO (Alerta)
-                    document.getElementById('resumen-maximo-data').textContent = data.resumen_maximo;
-
-                    // 4. Mostrar la OPORTUNIDAD DE COBERTURA (NUEVA LÍNEA CLAVE)
-                    document.getElementById('correlacion-minima-data').textContent = data.correlacion_minima;
 
                     console.log("✅ Datos de Análisis Cuantitativo cargados y web actualizada.");
                 })
                 .catch(error => {
                     console.error('❌ Error al cargar o procesar datos JSON:', error);
+                    // Failsafe para todos los módulos si falla la carga
+                    document.getElementById('resumen-maximo-data').textContent = 'FALLA';
+                    document.getElementById('pares-afectados-data').textContent = 'Error de Sincronización';
+                    document.getElementById('correlacion-minima-data').textContent = 'FALLA';
+                    document.getElementById('pares-cobertura-data').textContent = 'Error de Sincronización';
+                    document.getElementById('fecha-actualizacion').textContent = 'Error de Carga';
+                    // Failsafe para Hero
                     const ctaMini = document.querySelector('.cta-mini');
                     if (ctaMini) {
-                        ctaMini.innerHTML = `⚠️ Sistema de IA en inicio. Próximo Análisis: Mañana, 19:00 (Hora Local).`;
+                        ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Próximo Análisis: Mañana, 19:00 (Hora Local).`;
                     }
-                    document.getElementById('fecha-actualizacion').textContent = 'Error al cargar';
-                    document.getElementById('resumen-maximo-data').textContent = 'Datos no disponibles. El servidor no ha generado el análisis aún.';
-                    // Failsafe para la nueva tarjeta
-                    document.getElementById('correlacion-minima-data').textContent = 'Datos no disponibles. El servidor no ha generado el análisis aún.';
                 });
         }
 
-        // --- FUNCIÓN DE SIMULACIÓN DE SUPERVISIÓN POR IA ---
+        // --- FUNCIÓN DE SIMULACIÓN DE SUPERVISIÓN POR IA (JavaScript) ---
         function updateAIAuditDate() {
             const now = new Date();
             const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
             const formattedDate = now.toLocaleDateString('es-CL', options).replace(/\//g, '/') + ' | ' + now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
 
+            // Simula la supervisión de la Biblioteca de Fundamentos (3 tarjetas)
             document.getElementById('date-1').textContent = `Auditado ${formattedDate}`;
             document.getElementById('date-2').textContent = `Auditado ${formattedDate}`;
             document.getElementById('date-3').textContent = `Auditado ${formattedDate}`;
 
+            // Simula la actualización de la Sala de Crisis (2 tarjetas)
             document.getElementById('crisis-date-1').textContent = `Actualizado ${formattedDate}`;
             document.getElementById('crisis-date-2').textContent = `Actualizado ${formattedDate}`;
         }
@@ -229,5 +278,5 @@
         document.addEventListener('DOMContentLoaded', loadAnalysis);
         document.addEventListener('DOMContentLoaded', updateAIAuditDate);
     </script>
-    </body>
+</body>
 </html>
