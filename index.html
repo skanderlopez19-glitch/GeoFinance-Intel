@@ -5,123 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inteligencia Geo-Financiera Cuantificada | Análisis LATAM</title>
     <link rel="stylesheet" href="styles.css">
-
-    <style>
-        /* Variables y tipografía (Asegurando el look de terminal/neón) */
-        :root {
-            --color-dark: #0A0A0A;
-            --color-text-light: #E0E0E0;
-            --color-accent-primary: #FFC300; /* Amarillo Neón para Acción/Alerta Secundaria */
-            --color-alert-danger: #D81E1E; /* Rojo Crítico para Máximo Riesgo */
-            --color-surface-dark: #1F1F1F;
-            --font-heading: 'Roboto Mono', monospace; /* Fuentes de terminal para impacto */
-            --font-body: 'Arial', sans-serif;
-        }
-
-        /* Estilos específicos para el nuevo Dashboard (#analisis) */
-        #analisis {
-            background-color: var(--color-dark);
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        #analisis h2 {
-            color: var(--color-text-light);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        /* Estructura del dashboard desagregada */
-        .dashboard-container {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 40px; /* Espacio entre filas */
-        }
-
-        .critical-panels {
-            display: flex;
-            justify-content: space-between;
-            gap: 40px; /* Espacio entre los módulos Risk y Blindaje */
-        }
-
-        /* MÓDULO RIESGO CRÍTICO (El más grande e impactante) */
-        .module-risk-alert {
-            width: 60%; /* Más ancho para dar más peso visual */
-            padding: 40px;
-            border: 3px solid var(--color-alert-danger);
-            box-shadow: 0 0 20px rgba(216, 30, 30, 0.4); /* Efecto de resplandor Neón Rojo */
-            background-color: rgba(216, 30, 30, 0.08); /* Fondo sutil para alarma */
-            text-align: left;
-            transition: transform 0.3s ease;
-        }
-        .module-risk-alert:hover {
-            transform: scale(1.01);
-        }
-
-        .module-risk-alert h3 {
-            border-bottom: 2px solid var(--color-alert-danger);
-            padding-bottom: 10px;
-        }
-
-        /* La Cifra de Riesgo */
-        .module-risk-alert #resumen-maximo-data {
-            font-size: 5rem; /* ¡Máximo impacto visual! */
-            font-family: var(--font-heading);
-            font-weight: 900;
-        }
-
-        /* MÓDULO BLINDAJE ESTRATÉGICO */
-        .module-blindaje {
-            width: 40%;
-            padding: 40px;
-            border: 3px solid var(--color-accent-primary);
-            box-shadow: 0 0 20px rgba(255, 195, 0, 0.4); /* Resplandor Neón Amarillo */
-            background-color: rgba(255, 195, 0, 0.08);
-            text-align: left;
-            transition: transform 0.3s ease;
-        }
-        .module-blindaje:hover {
-            transform: scale(1.01);
-        }
-
-        .module-blindaje h3 {
-            border-bottom: 2px solid var(--color-accent-primary);
-            padding-bottom: 10px;
-        }
-
-        /* La Cifra de Cobertura */
-        .module-blindaje #correlacion-minima-data {
-            font-size: 3rem;
-            font-family: var(--font-heading);
-            font-weight: 700;
-        }
-
-        /* MÓDULO DE EVIDENCIA (Banda central) */
-        .module-evidence {
-            padding: 30px 0;
-            border-top: 1px dashed #444; /* Líneas de separación de terminal */
-            border-bottom: 1px dashed #444;
-            background-color: #141414;
-        }
-
-        /* Estilos para asegurar que el texto se vea bien dentro de los módulos */
-        .module-risk-alert p, .module-blindaje p {
-            color: var(--color-text-light);
-        }
-
-        /* Si es necesario, añadir media queries para móviles */
-        @media (max-width: 900px) {
-            .critical-panels {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .module-risk-alert, .module-blindaje {
-                width: 100%;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -135,43 +18,49 @@
     </header>
 
     <main>
-   <section id="hero" style="position: relative; overflow: hidden; min-height: 80vh; padding: 0;">
+        <section id="hero">
+            <h1>Desciframos la Geopolítica que Mueve su Capital</h1>
+            <p>Obtenga el **Informe Estratégico Diario** de LATAM, impulsado por Python e Inteligencia Cuantitativa.</p>
+            <a href="#suscribir" class="btn-hero">Reciba el Informe Diario</a>
+            <p class="cta-mini">Automatizado y de Nivel Ejecutivo | **Próximo Envío: Mañana, 19:00 (Hora Local)**</p>
+        </section>
 
-    <div class="hero-content" style="position: relative; z-index: 10; text-align: center; padding: 150px 5%; color: white;">
-        <h1 style="font-family: var(--font-heading); font-size: 4.5rem; margin-bottom: 20px; font-weight: 700; color: white;">
-            Desciframos la Geopolítica que Mueve su Capital
-        </h1>
-        <p style="font-size: 1.3rem; margin-bottom: 40px; color: #E8E8E8;">
-            Obtenga el **Informe Estratégico Diario** de LATAM, impulsado por Python e Inteligencia Cuantitativa.
-        </p>
-        <a href="#suscribir" class="btn-hero" style="padding: 18px 40px; font-size: 1.2rem; border-radius: 2px;">Reciba el Informe Diario</a>
-        <p class="cta-mini" style="margin-top: 35px; border: 1px solid var(--color-accent-primary); padding: 15px; background-color: rgba(0, 0, 0, 0.7);">
-            ⚠️ SIN CONEXIÓN A LA MATRIZ. Próximo Análisis: Mañana, 19:00 (Hora Local).
-        </p>
-    </div>
-
-    <div class="background-animation" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
-       
-</section>
+        <section id="valor">
+            <h2>¿Por qué nuestro informe es Único?</h2>
+            <div class="features">
+                <div class="feature-box">
+                    <h3>📊 IRDC Cuantificado</h3>
+                    <p>Métrica exclusiva que mide el **riesgo real de dependencia** de su inversión a los choques de Petróleo, Cobre y el S&P 500.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🌎 Enfoque Geopolítico</h3>
+                    <p>Traducimos las decisiones de la FED, China y los bancos centrales en **conclusiones de inversión directa**, no solo en noticias.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🔒 Automatización Diaria</h3>
+                    <p>El informe se genera diariamente por **Python** y se entrega como un **PDF profesional** a su bandeja de entrada.</p>
+                </div>
+            </div>
+        </section>
 
         <section id="fundamentos">
             <h2>📜 Fundamentos: Historia y Teoría del Poder</h2>
-            <p class="section-subtitle">
+            <p class="section-subtitle" style="font-size:1.2em; color:#aaa; margin-bottom: 60px;">
                 El Científico Político Jefe establece el marco. La crisis de hoy no es un accidente; es el resultado cuantificado de dinámicas de poder que tienen siglos de antigüedad, analizadas bajo la **Teoría de Sistemas-Mundo**.
             </p>
 
-            <div class="analysis-container">
+            <div class="analysis-container" style="justify-content: space-evenly; flex-wrap: wrap;">
 
-                <div class="analysis-point">
+                <div class="analysis-point" style="width: 45%;">
                     <h3>Teoría de Sistemas-Mundo y la Periferia Financiera</h3>
-                    <p>
+                    <p style="color:#b0b0b0;">
                         El trabajo de Immanuel Wallerstein define el mundo como un sistema de **Centro (Núcleo)** y **Periferia**. El Centro (EE. UU., China, UE) establece las reglas financieras, mientras que la Periferia (LATAM) se adapta. En GeoFinance Intel, esto significa que las políticas internas de los países LATAM siempre tendrán un "efecto limitado" frente a las decisiones tomadas en Washington o Beijing.
                     </p>
                 </div>
 
-                <div class="analysis-point">
+                <div class="analysis-point" style="width: 45%;">
                     <h3>El Contagio de la Tasa: La Ley No Oficial de la Región</h3>
-                     <p>
+                     <p style="color:#b0b0b0;">
                         La Ley No Oficial de la Región es simple: la política monetaria de la Reserva Federal (FED) de EE. UU. Cuando la FED sube las tasas, los capitales de inversión migran al dólar (el activo de menor riesgo). Para evitar el colapso de sus divisas, los bancos centrales LATAM se ven obligados a subir sus tasas. Nuestro "IRDC" cuantifica este "Contagio Financiero" diariamente.
                     </p>
                 </div>
@@ -181,27 +70,27 @@
                 <h2>Biblioteca de Inteligencia Estratégica</h2>
                 <p style="color:#aaa; font-size:1.1em; margin-bottom: 40px;">Artículos de análisis profundo conectados a la IA: La supervisión automatizada asegura que el contenido teórico se mantenga relevante con la coyuntura del día.</p>
 
-                <div class="articles-container">
+                <div class="articles-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
 
-                    <div class="article-card" id="article-1">
+                    <div class="article-card" id="article-1" style="background-color: var(--color-surface-dark); padding: 25px; border-radius: 8px; width: 300px; text-align: left; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 195, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
                         <h3 style="color: var(--color-alert-danger);">🔴 COYUNTURA: La Crisis de la Inflación</h3>
-                        <p>Cómo la política de "dinero barato" de la FED post-2008 reavivó la dependencia financiera de LATAM. El IRDC lo confirma.</p>
-                        <a href="analisis-inflacion.html" target="_blank">Leer Análisis Completo »</a>
-                        <p class="article-date">Supervisado por IA: <span id="date-1">Cargando...</span></p>
+                        <p style="color:#b0b0b0; font-size:0.9em;">Cómo la política de "dinero barato" de la FED post-2008 reavivó la dependencia financiera de LATAM. El IRDC lo confirma.</p>
+                        <a href="analisis-inflacion.html" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: bold; margin-top: 10px; display: block;">Leer Análisis Completo »</a>
+                        <p class="article-date" style="font-size:0.75em; color: #555; margin-top: 15px; border-top: 1px solid #333; padding-top: 5px;">Supervisado por IA: <span id="date-1">Cargando...</span></p>
                     </div>
 
-                    <div class="article-card" id="article-2">
+                    <div class="article-card" id="article-2" style="background-color: var(--color-surface-dark); padding: 25px; border-radius: 8px; width: 300px; text-align: left; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 195, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
                         <h3 style="color: var(--color-accent-primary);">🟡 TRAYECTORIA: El Rol Geoeconómico de China</h3>
-                        <p>Análisis de la Iniciativa de la Franja y la Ruta (BRI) y la volatilidad del Yuan (CNY) en las economías de *commodities* de LATAM.</p>
-                        <a href="analisis-rol-china.html" target="_blank">Leer Análisis Completo »</a>
-                        <p class="article-date">Supervisado por IA: <span id="date-2">Cargando...</span></p>
+                        <p style="color:#b0b0b0; font-size:0.9em;">Análisis de la Iniciativa de la Franja y la Ruta (BRI) y la volatilidad del Yuan (CNY) en las economías de *commodities* de LATAM.</p>
+                        <a href="analisis-rol-china.html" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: bold; margin-top: 10px; display: block;">Leer Análisis Completo »</a>
+                        <p class="article-date" style="font-size:0.75em; color: #555; margin-top: 15px; border-top: 1px solid #333; padding-top: 5px;">Supervisado por IA: <span id="date-2">Cargando...</span></p>
                     </div>
 
-                    <div class="article-card" id="article-3">
+                    <div class="article-card" id="article-3" style="background-color: var(--color-surface-dark); padding: 25px; border-radius: 8px; width: 300px; text-align: left; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 195, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
                         <h3 style="color: var(--color-text-light);">📈 METODOLOGÍA: El IRDC en Acción</h3>
-                        <p>Desglose completo de cómo su riesgo de divisa se calcula en tiempo real, validando la Decisión Base de Inversión.</p>
-                        <a href="analisis-metodologia-irdc.html" target="_blank">Leer Análisis Completo »</a>
-                        <p class="article-date">Supervisado por IA: <span id="date-3">Cargando...</span></p>
+                        <p style="color:#b0b0b0; font-size:0.9em;">Desglose completo de cómo su riesgo de divisa se calcula en tiempo real, validando la Decisión Base de Inversión.</p>
+                        <a href="analisis-metodologia-irdc.html" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: bold; margin-top: 10px; display: block;">Leer Análisis Completo »</a>
+                        <p class="article-date" style="font-size:0.75em; color: #555; margin-top: 15px; border-top: 1px solid #333; padding-top: 5px;">Supervisado por IA: <span id="date-3">Cargando...</span></p>
                     </div>
                 </div>
             </div>
@@ -209,28 +98,28 @@
 
         <section id="conflictos">
             <h2>⚔️ Sala de Crisis: Juicio Estratégico de Conflictos Globales</h2>
-            <p class="section-subtitle">
+            <p class="section-subtitle" style="font-size:1.2em; color:#aaa; margin-bottom: 60px;">
                 Convertimos las zonas calientes del mundo en inteligencia de mercado. Estos son los módulos de riesgo geopolítico que impactan la matriz de LATAM.
             </p>
 
-            <div class="analysis-container">
+            <div class="analysis-container" style="justify-content: center; flex-wrap: wrap; gap: 30px;">
 
-                <div class="article-card" id="crisis-1">
+                <div class="article-card" id="crisis-1" style="background-color: var(--color-surface-dark); padding: 25px; border-radius: 8px; width: 45%; text-align: left; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 69, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
                     <h3 style="color: var(--color-alert-danger);">⛽ FRENTE ESTE: La Prima de Riesgo Energético</h3>
-                    <p>
+                    <p style="color:#b0b0b0;">
                         **Análisis Profundo:** El conflicto Rusia-Ucrania no es solo una crisis de gas. Es una presión constante sobre el Petróleo WTI (CL=F), que se traduce en **riesgo inflacionario directo** para el Peso Colombiano y Real Brasileño. Nuestro juicio cuantifica la sensibilidad de sus divisas a la escalada en el Este.
                     </p>
-                    <a href="analisis-frente-este.html" target="_blank">Leer Análisis de Contingencia »</a>
-                    <p class="article-date">Último Juicio Cualitativo: <span id="crisis-date-1">Supervisando...</span></p>
+                    <a href="analisis-frente-este.html" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: bold; margin-top: 10px; display: block;">Leer Análisis de Contingencia »</a>
+                    <p class="article-date" style="font-size:0.75em; color: #555; margin-top: 15px; border-top: 1px solid #333; padding-top: 5px;">Último Juicio Cualitativo: <span id="crisis-date-1">Supervisando...</span></p>
                 </div>
 
-                <div class="article-card" id="crisis-2">
+                <div class="article-card" id="crisis-2" style="background-color: var(--color-surface-dark); padding: 25px; border-radius: 8px; width: 45%; text-align: left; transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255, 195, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
                     <h3 style="color: var(--color-accent-primary);">🚢 RUTA PACÍFICA: Tensión Comercial y el Cobre</h3>
-                    <p>
+                    <p style="color:#b0b0b0;">
                         **Análisis Profundo:** La salud del mercado asiático, especialmente la estabilidad del Yuan Chino (CNY), es el *driver* más crítico para Chile y Perú. Cuantificamos cómo la geopolítica en el Mar de China Meridional afecta la demanda global de Cobre (HG=F) y el riesgo de los activos mineros en LATAM.
                     </p>
-                    <a href="analisis-ruta-pacifica.html" target="_blank">Leer Análisis de Contagio CNY »</a>
-                    <p class="article-date">Último Juicio Cualitativo: <span id="crisis-date-2">Supervisando...</span></p>
+                    <a href="analisis-ruta-pacifica.html" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: bold; margin-top: 10px; display: block;">Leer Análisis de Contagio CNY »</a>
+                    <p class="article-date" style="font-size:0.75em; color: #555; margin-top: 15px; border-top: 1px solid #333; padding-top: 5px;">Último Juicio Cualitativo: <span id="crisis-date-2">Supervisando...</span></p>
                 </div>
             </div>
         </section>
@@ -241,17 +130,17 @@
                 Monitoreo en tiempo real de la matriz de riesgo geopolítico. Nuestro juicio es cuantificado.
             </p>
 
-            <div class="dashboard-container">
+            <div class="dashboard-container" style="max-width: 1200px; margin: auto; display: flex; flex-direction: column; gap: 40px;">
 
-                <div class="critical-panels">
+                <div class="critical-panels" style="display: flex; justify-content: space-between; gap: 40px;">
 
-                    <div class="module-risk-alert">
-                        <h3 style="color: var(--color-alert-danger);">
+                    <div class="module-risk-alert" style="width: 60%; padding: 40px; border: 3px solid var(--color-alert-danger); background-color: rgba(216, 30, 30, 0.05); text-align: left;">
+                        <h3 style="color: var(--color-alert-danger); font-family: var(--font-heading); margin-bottom: 20px;">
                             ALERTA CRÍTICA: BLOQUE DE CONTAGIO
                         </h3>
 
                         <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 20px;">
-                            <p id="resumen-maximo-data">
+                            <p id="resumen-maximo-data" style="font-family: var(--font-body); font-size: 5rem; font-weight: 700; color: var(--color-alert-danger); line-height: 1;">
                                 Cargando...
                             </p>
                             <div style="text-align: right;">
@@ -268,8 +157,8 @@
                         </p>
                     </div>
 
-                    <div class="module-blindaje">
-                        <h3 style="color: var(--color-accent-primary);">
+                    <div class="module-blindaje" style="width: 40%; padding: 40px; border: 3px solid var(--color-accent-primary); background-color: rgba(255, 195, 0, 0.05); text-align: left;">
+                        <h3 style="color: var(--color-accent-primary); font-family: var(--font-heading); margin-bottom: 20px;">
                             ACCIÓN: BLINDAJE ESTRATÉGICO
                         </h3>
 
@@ -287,7 +176,7 @@
                     </div>
                 </div>
 
-                <div class="module-evidence">
+                <div class="module-evidence" style="text-align: center; padding: 25px 0; border-top: 1px dashed #333; border-bottom: 1px dashed #333;">
                     <p style="font-size: 1.1rem; color: #aaa; margin-bottom: 15px;">
                         EVIDENCIA CUANTIFICADA: MAPA DE CALOR Y VOLATILIDAD IRDC.
                     </p>
@@ -318,14 +207,6 @@
             fetch(JSON_URL)
                 .then(response => {
                     if (!response.ok) {
-                        // En caso de fallo, intentamos una vez más con una ruta de fallback (si el PyCharm tiene archivos en la raíz)
-                        console.warn("Intento fallido de cargar data.json. Intentando con ruta relativa './data.json'.");
-                        return fetch('./data.json');
-                    }
-                    return response.json();
-                })
-                .then(response => {
-                    if (!response.ok) {
                         throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
                     }
                     return response.json();
@@ -334,16 +215,14 @@
                     // --- PARSEO AVANZADO DE DATOS (Dividir texto y cifra) ---
 
                     // 1. RIESGO MÁXIMO: Separa el texto del (número)
-                    // Ejemplo: "Riesgo Máximo: México (Peso) y Brasil (Real) (0.41)"
-                    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/); // Extrae la cifra (0.41)
+                    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
                     const maxCifra = maxMatch ? maxMatch[0] : 'N/A';
                     const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(maxCifra, '').trim();
 
                     // 2. CORRELACIÓN MÍNIMA: Separa el texto del (número)
-                    // Ejemplo: "México (Peso) vs. Cobre Futuros (-0.12)"
-                    const minMatch = data.correlacion_minima.match(/\((.*?)\)/); // Extrae la cifra (-0.12)
+                    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
                     const minCifra = minMatch ? minMatch[0] : 'N/A';
-                    const minPares = data.correlacion_minima.replace('Mínima: ', '').replace(minCifra, '').trim();
+                    const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(minCifra, '').trim();
 
 
                     // --- APLICACIÓN DE DATOS AL DASHBOARD DE MÁXIMO NIVEL ---
@@ -362,7 +241,7 @@
                     document.getElementById('correlacion-minima-data').textContent = minCifra;
                     document.getElementById('pares-cobertura-data').textContent = minPares;
 
-                    // 4. Dashboard - Estatus (Fecha)
+                    // 4. Dashboard - Estaus (Fecha)
                     document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
 
 
@@ -376,7 +255,7 @@
                     document.getElementById('correlacion-minima-data').textContent = '— SINC OFFLINE —';
                     document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
                     document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
-
+                    // Failsafe para Hero
                     const ctaMini = document.querySelector('.cta-mini');
                     if (ctaMini) {
                         ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Próximo Análisis: Mañana, 19:00 (Hora Local).`;
@@ -384,16 +263,11 @@
                 });
         }
 
-        // --- FUNCIÓN DE SIMULACIÓN DE SUPERVISIÓN POR IA (Para dar el efecto "Viviente") ---
+        // --- FUNCIÓN DE SIMULACIÓN DE SUPERVISIÓN POR IA ---
         function updateAIAuditDate() {
             const now = new Date();
-            // Formato de hora específico para la sensación de terminal (HH:MM)
-            const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
-            const dateOptions = { month: '2-digit', day: '2-digit', year: 'numeric' };
-
-            const datePart = now.toLocaleDateString('es-CL', dateOptions).replace(/\//g, '/');
-            const timePart = now.toLocaleTimeString('es-CL', timeOptions);
-            const formattedDate = `${datePart} | ${timePart}`;
+            const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+            const formattedDate = now.toLocaleDateString('es-CL', options).replace(/\//g, '/') + ' | ' + now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
 
             // Simula la supervisión de la Biblioteca de Fundamentos (3 tarjetas)
             document.getElementById('date-1').textContent = `Auditado ${formattedDate}`;
