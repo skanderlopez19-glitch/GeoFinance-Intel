@@ -123,8 +123,9 @@ datos_json = {
 # 3. Guardamos el archivo JSON en la carpeta principal
 ruta_json_web = 'data.json' # Se guarda en la raiz para el despliegue de GitHub Pages
 
-with open(ruta_json_web, 'w') as f:
-    json.dump(datos_json, f, indent=4)
+with open(ruta_json_web, 'w', encoding='utf-8') as f:
+    # Añadimos ensure_ascii=False para que escriba "México" y no "M\u00e9xico"
+    json.dump(datos_json, f, indent=4, ensure_ascii=False)
 
 print(f"\n✅ Datos de la Web exportados a {ruta_json_web}!")
 # =================================================================
