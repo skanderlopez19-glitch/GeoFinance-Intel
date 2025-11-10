@@ -1,18 +1,19 @@
-/* --- VARIABLES Y FUENTES (Identidad Táctica) --- */
+/* --- 0. IMPORTACIONES DE FUENTES --- */
+/* Fuentes angulares y monoespaciadas para look de terminal/data */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Oswald:wght@500;700&display=swap');
 
+/* --- 1. VARIABLES Y RESET (Identidad Táctica) --- */
 :root {
-    --color-dark: #0A0A0A; /* Negro profundo - base */
+    --color-background-dark: #0A0A0A; /* Negro profundo - base */
     --color-surface: #141414; /* Módulos y header */
     --color-text-light: #E8E8E8; /* Texto principal */
-    --color-accent-primary: #FFC300; /* Amarillo VIBRANTE (ALERTA) */
-    --color-alert-danger: #D81E1E; /* Rojo Intenso para CTA */
-    --font-heading: 'Oswald', sans-serif; /* Fuente angular para títulos */
-    --font-body: 'Roboto Mono', monospace; /* Fuente monoespaciada para la data/contenido */
+    --color-accent-primary: #FFC300; /* Amarillo VIBRANTE (ALERTA/PREMIUM) */
+    --color-alert-danger: #D81E1E; /* Rojo Intenso para CTA y Máximo Riesgo */
+    --font-heading: 'Oswald', sans-serif;
+    --font-body: 'Roboto Mono', monospace; /* Para data y texto primario */
     --transition-speed: 0.3s;
 }
 
-/* Base y Fondo de Código Sutil */
 * {
     margin: 0;
     padding: 0;
@@ -21,23 +22,23 @@
 
 body {
     font-family: var(--font-body);
-    background-color: var(--color-dark);
+    background-color: var(--color-background-dark);
     color: var(--color-text-light);
     line-height: 1.6;
-    /* Efecto de fondo sutil: simula una pantalla de código */
+    /* Efecto de fondo sutil: simula una pantalla de monitor/código */
     background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
 }
 
-/* --- HEADER Y NAVEGACIÓN (Panel Superior) --- */
+/* --- 2. HEADER Y NAVEGACIÓN --- */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 4%;
     background-color: var(--color-surface);
-    border-bottom: 2px solid var(--color-accent-primary);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid var(--color-accent-primary); /* Borde Dorado Táctico */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -57,48 +58,31 @@ nav a {
     margin-left: 20px;
     font-size: 0.95rem;
     padding: 0.4rem 0;
-    transition: color var(--transition-speed);
-}
-
-nav a:hover {
-    color: var(--color-accent-primary);
 }
 
 .btn-cta {
     background-color: var(--color-alert-danger);
     color: var(--color-text-light) !important;
     padding: 10px 22px;
-    border-radius: 2px; /* Más angular */
+    border-radius: 2px;
     font-weight: bold;
-    transition: background-color var(--transition-speed);
     text-transform: uppercase;
 }
+.btn-cta:hover { background-color: #A01C1C; }
 
-.btn-cta:hover {
-    background-color: #A01C1C;
-}
 
-/* --- SECCIÓN HERO (La Alerta Crítica) --- */
+/* --- 3. SECCIÓN HERO (Alto Impacto) --- */
 #hero {
     background: var(--color-surface);
     padding: 180px 5%;
-    border-bottom: 5px solid var(--color-alert-danger); /* Indicador de Riesgo Mayor */
+    border-bottom: 5px solid var(--color-alert-danger);
 }
 
 #hero h1 {
     font-family: var(--font-heading);
     font-size: 4.5rem;
-    margin-bottom: 20px;
     font-weight: 700;
-    color: var(--color-text-light);
     letter-spacing: -1px;
-}
-
-#hero p {
-    font-size: 1.3rem;
-    margin-bottom: 40px;
-    color: #b0b0b0;
-    max-width: 800px;
 }
 
 .btn-hero {
@@ -109,16 +93,18 @@ nav a:hover {
 }
 
 .cta-mini {
+    /* Estilo para la línea de alerta dinámica */
     margin-top: 35px;
     padding: 18px;
-    border: 1px solid var(--color-accent-primary); /* Marco amarillo para la ALERTA */
+    border: 1px solid var(--color-accent-primary);
     background-color: rgba(255, 195, 0, 0.1);
     color: var(--color-accent-primary);
     font-weight: 700;
     font-size: 1.1rem;
 }
 
-/* --- BLOQUES DE CONTENIDO (Módulos Tácticos) --- */
+
+/* --- 4. BLOQUES DE CONTENIDO GENERAL --- */
 section {
     padding: 100px 5%;
 }
@@ -132,72 +118,115 @@ h2 {
     letter-spacing: 4px;
 }
 
-/* Cajas de Fundamentos / Análisis / Crisis */
-.feature-box, .analysis-point, .article-card {
-    background-color: var(--color-surface);
-    padding: 35px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    transition: all var(--transition-speed);
-}
-
-.feature-box:hover, .analysis-point:hover, .article-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 25px rgba(255, 195, 0, 0.2); /* Sombra de neón suave */
-}
-
-.feature-box h3, .analysis-point h3, .article-card h3 {
+h3 {
     font-family: var(--font-heading);
     color: var(--color-accent-primary);
     letter-spacing: 1px;
     margin-top: 0;
 }
 
+/* Cajas de Fundamentos / Valor */
+.features, .analysis-container, .articles-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Permite que las cajas se ajusten */
+}
+
+.feature-box, .analysis-point, .article-card {
+    background-color: var(--color-surface);
+    padding: 35px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-speed);
+}
+
+.feature-box:hover, .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 25px rgba(255, 195, 0, 0.15); /* Sombra de neón suave */
+}
+
 .article-card a {
     color: var(--color-alert-danger);
     font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s;
 }
-
-.article-date {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.7rem !important;
-    color: #666 !important;
-}
-
-/* --- SECCIÓN SUSCRIPCIÓN --- */
-#suscribir {
-    background-color: var(--color-surface);
-    border-top: 3px solid var(--color-alert-danger);
-}
-
-#suscribir input[type="email"] {
-    padding: 15px;
-    width: 380px;
-    border: none;
-    border-radius: 4px;
-    background-color: #222;
-    color: var(--color-text-light);
-    font-size: 1.1rem;
-    font-family: var(--font-body);
-}
-
-.btn-submit {
-    padding: 15px 35px;
-}
-
-.price-info {
-    margin-top: 20px;
+.article-card a:hover {
     color: var(--color-accent-primary);
-    font-size: 1.2rem;
 }
 
-/* --- FOOTER --- */
-footer {
-    padding: 30px 5%;
-    background-color: var(--color-dark);
-    border-top: 1px solid #333;
-    color: #444;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
+
+/* --- 5. DASHBOARD CINEMÁTICO (#analisis) --- */
+
+/* Estructura del Dashboard */
+.dashboard-container {
+    max-width: 1200px;
+    margin: auto;
+    flex-direction: column;
+}
+
+.critical-panels {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Base de los Paneles (Para eliminar bordes y sombras generales) */
+.module-risk-alert, .module-blindaje {
+    padding: 40px;
+    text-align: left;
+    box-shadow: none;
+    border-radius: 0; /* Angular */
+    /* Resetea bordes de analysis-point */
+    border: none !important;
+    transition: transform 0.3s ease;
+}
+
+/* RIESGO MÁXIMO (ROJO CRÍTICO) - MÓDULO GIGANTE */
+.module-risk-alert {
+    width: 65%; /* Más prominente */
+    border: 3px solid var(--color-alert-danger);
+    box-shadow: 0 0 30px rgba(216, 30, 30, 0.5); /* Neón Crítico */
+    background-color: rgba(216, 30, 30, 0.08); /* Fondo de alarma */
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.module-risk-alert #resumen-maximo-data {
+    font-size: 5rem; /* ¡Máximo Impacto! */
+    font-family: var(--font-heading);
+    font-weight: 900;
+    color: var(--color-alert-danger);
+    line-height: 1;
+}
+
+/* BLINDAJE ESTRATÉGICO (AMARILLO TÁCTICO) */
+.module-blindaje {
+    width: 35%; /* Más angosto */
+    border: 3px solid var(--color-accent-primary);
+    box-shadow: 0 0 25px rgba(255, 195, 0, 0.4); /* Resplandor Neón Amarillo */
+    background-color: rgba(255, 195, 0, 0.08);
+    border-radius: 5px;
+    text-align: left;
+}
+
+.module-blindaje #correlacion-minima-data {
+    font-size: 3rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-accent-primary);
+    line-height: 1;
+}
+
+/* FILA DE EVIDENCIA (Banda central) */
+.module-evidence {
+    text-align: center;
+    padding: 30px 0;
+    border-top: 2px dashed #333;
+    border-bottom: 2px dashed #333;
+    background-color: var(--color-surface); /* Banda oscura */
+    margin-top: 40px;
 }
