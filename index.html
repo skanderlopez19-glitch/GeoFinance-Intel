@@ -186,6 +186,148 @@
 
     <main-footer></main-footer>
 
+</main>
+
+    <main-footer></main-footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <script src="components.js"></script>
+    ```
+
+### 2. Preparar el Contenedor del Gráfico
+
+Ahora, en la sección **`id="analisis"`** de tu **`index.html`**, vamos a añadir el elemento HTML donde se dibujará el gráfico.
+
+Busca la sección `id="analisis"` y, **debajo** de los paneles críticos (`critical-panels`), añade este nuevo contenedor:
+
+```html
+</div>
+
+            <div class="module-volatilidad-chart" style="margin-top: 50px; padding: 20px; background-color: var(--color-surface-dark); border-radius: 8px;">
+                <h3 style="color: var(--color-text-light); text-align: center; margin-bottom: 20px;">
+                    Volatilidad Cuantificada IRDC (Últimos 7 Días)
+                </h3>
+                <canvas id="volatilityChart" style="max-height: 400px;"></canvas>
+            </div>
+            </section>
+        <section id="suscribir">
+        ```
+
+### 3. Código JavaScript para Dibujar el Gráfico
+
+Finalmente, necesitamos modificar tu script principal (el que comienza con `const JSON_URL = 'data.json';`) para que, después de cargar `data.json`, dibuje el gráfico.
+
+En tu etiqueta `<script>` al final de **`index.html`**, **reemplaza** la función `loadAnalysis()` por la siguiente versión que incluye el código para dibujar el gráfico:
+
+```javascript
+// REEMPLAZAR la función loadAnalysis() EXISTENTE
+function loadAnalysis() {
+    fetch(JSON_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // --- PARSEO AVANZADO DE DATOS (Mismos que antes) ---
+            const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
+            const maxCifra = maxMatch ? maxMatch[0] : 'N/A';
+            const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(maxCifra, '').trim();
+
+            const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
+            const minCifra = minMatch ? minMatch[0] : 'N/A';
+            const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(minCifra, '').trim();
+
+
+            // --- APLICACIÓN DE DATOS AL DASHBOARD DE MÁXIMO NIVEL (Mismos que antes) ---
+            const ctaMini = document.querySelector('.cta-mini');
+            if (ctaMini) {
+                ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
+            }
+            document.getElementById('resumen-maximo-data').textContent = maxCifra;
+            document.getElementById('pares-afectados-data').textContent = maxPares;
+            document.getElementById('correlacion-minima-data').textContent = minCifra;
+            document.getElementById('pares-cobertura-data').textContent = minPares;
+            document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
+
+
+            // --- ⚠️ NUEVO CÓDIGO: DIBUJAR GRÁFICO DE VOLATILIDAD CON CHART.JS ⚠️ ---
+            const ctx = document.getElementById('volatilityChart');
+
+            if (ctx && data.volatilidad_historica) {
+                // Obtener etiquetas y datos del objeto data.json
+                const labels = data.volatilidad_historica.map(item => item.fecha);
+                const volatilityData = data.volatilidad_historica.map(item => item.volatilidad);
+
+                new Chart(ctx, {
+                    type: 'line', // Tipo de gráfico de línea
+                    data: {
+                        labels: labels, // Eje X: Fechas
+                        datasets: [{
+                            label: 'IRDC - Índice de Riesgo de Divisa y Contagio',
+                            data: volatilityData, // Eje Y: Valores de Volatilidad
+                            borderColor: '#FFC300', // Color primario (Amarillo GeoFinance)
+                            backgroundColor: 'rgba(255, 195, 0, 0.2)', // Relleno con transparencia
+                            borderWidth: 2,
+                            tension: 0.4, // Suaviza la línea
+                            pointRadius: 4,
+                            pointBackgroundColor: '#D81E1E' // Puntos de datos en color de alerta
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: '#B0B0B0' // Color de la leyenda
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Días (Histórico)',
+                                    color: '#888'
+                                },
+                                ticks: {
+                                    color: '#B0B0B0' // Color de las etiquetas del eje X
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'IRDC (%)',
+                                    color: '#888'
+                                },
+                                ticks: {
+                                    color: '#B0B0B0' // Color de las etiquetas del eje Y
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            console.log("✅ Datos de Análisis Cuantitativo cargados y web actualizada.");
+        })
+        .catch(error => {
+            console.error('❌ Error al cargar o procesar datos JSON:', error);
+            // ... (el resto del código de Failsafe sigue igual) ...
+        });
+}
+// ... (el resto de tu script JS, incluyendo updateAIAuditDate, sigue igual) ...
+
     <script src="components.js"></script>
 
     <script>
