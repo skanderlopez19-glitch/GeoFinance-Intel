@@ -7,16 +7,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="logo">GEOFINANCE INTEL</div>
-        <nav>
-            <a href="#fundamentos">Teoría</a>
-            <a href="#conflictos">Crisis</a>
-            <a href="#analisis">Análisis</a>
-            <a href="#suscribir" class="btn-cta">Suscribirse</a>
-        </nav>
-    </header>
 
+    <main-header></main-header>
     <main>
      <section id="hero">
     <h1>Desciframos la Geopolítica que Mueve su Capital</h1>
@@ -196,8 +188,11 @@
         <p>&copy; 2025 GeoFinance Intel. Análisis Automatizado.</p>
     </footer>
 
+    <script src="components.js"></script>
+
     <script>
         const JSON_URL = 'data.json';
+        // ... (el resto de tu código JavaScript)
 
         function loadAnalysis() {
             fetch(JSON_URL)
