@@ -1,32 +1,23 @@
 {
-  "ultima_actualizacion": "11 Noviembre 2025, 19:00 CL",
-  "resumen_maximo": "Riesgo Máximo: México (Peso) y Brasil (Real) (78.3%)",
-  "correlacion_minima": "Oportunidad de Cobertura: Chile (Peso) vs. Perú (Sol) (12.1%)",
-  "top_dependencias": [
-    {
-      "nombre": "Oro (Refugio)",
-      "puntuacion_irdc": "0.12"
-    },
-    {
-      "nombre": "México (Peso)",
-      "puntuacion_irdc": "0.09"
-    },
-    {
-      "nombre": "Colombia (Peso)",
-      "puntuacion_irdc": "0.07"
-    },
-    {
-      "nombre": "Chile (Peso)",
-      "puntuacion_irdc": "0.06"
-    }
-  ],
-  "volatilidad_historica": [
-    { "fecha": "D-6", "volatilidad": 55.2 },
-    { "fecha": "D-5", "volatilidad": 62.8 },
-    { "fecha": "D-4", "volatilidad": 60.5 },
-    { "fecha": "D-3", "volatilidad": 68.1 },
-    { "fecha": "D-2", "volatilidad": 71.9 },
-    { "fecha": "D-1", "volatilidad": 75.6 },
-    { "fecha": "HOY", "volatilidad": 78.3 }
-  ]
+    "ultima_actualizacion": "11/11/2025 a las 22:10",
+    "resumen_maximo": "Riesgo Máximo: México (Peso) y Brasil (Real) (0.41)",
+    "top_dependencias": [
+        {
+            "nombre": "Oro (Refugio)",
+            "puntuacion_irdc": "0.12"
+        },
+        {
+            "nombre": "México (Peso)",
+            "puntuacion_irdc": "0.09"
+        },
+        {
+            "nombre": "Colombia (Peso)",
+            "puntuacion_irdc": "0.07"
+        },
+        {
+            "nombre": "Chile (Peso)",
+            "puntuacion_irdc": "0.06"
+        }
+    ],
+    "correlacion_minima": "México (Peso) vs. Cobre Futuros (-0.12)"
 }
