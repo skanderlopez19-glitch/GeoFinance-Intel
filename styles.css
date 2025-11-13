@@ -1,5 +1,4 @@
 /* --- 0. IMPORTACIONES DE FUENTES --- */
-/* Fuentes angulares y monoespaciadas para look de terminal/data */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Oswald:wght@500;700&display=swap');
 
 /* --- 1. VARIABLES Y RESET (Identidad Táctica) --- */
@@ -28,19 +27,22 @@ body {
     /* Efecto de fondo sutil: simula una pantalla de monitor/código */
     background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
+    /* CRÍTICO: El contenido del body no debe tener padding-top si el HERO tiene margin-top */
 }
 
-/* --- 2. HEADER Y NAVEGACIÓN --- */
-header {
+/* --- 2. HEADER Y NAVEGACIÓN (Corregido y Unificado) --- */
+#main-header { /* Usamos el ID del HTML corregido */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 4%;
     background-color: var(--color-surface);
-    border-bottom: 3px solid var(--color-accent-primary); /* Borde Dorado Táctico */
+    border-bottom: 3px solid var(--color-accent-primary);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    position: sticky;
+    /* ⚠️ CRÍTICO: Cambiado a fixed para que el menú no desaparezca al hacer scroll */
+    position: fixed;
     top: 0;
+    width: 100%;
     z-index: 1000;
 }
 
@@ -52,35 +54,15 @@ header {
     letter-spacing: 3px;
 }
 
-
-/* --- 2. HEADER Y NAVEGACIÓN --- */
-header {
-    /* ... estilos de header ... */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    /* ... estilos del logo ... */
-}
-
-/* ⬅️ AÑADE ESTE CÓDIGO FALTANTE AQUÍ ⬅️ */
-
+/* 🔥 CÓDIGO CRÍTICO FALTANTE: ALINEACIÓN HORIZONTAL DEL MENÚ */
 .main-nav ul {
-    list-style: none; /* Elimina los puntos predeterminados */
+    list-style: none; /* Elimina los puntos */
     padding: 0;
     margin: 0;
-    display: flex; /* 🔥 CRÍTICO: Muestra los <li> en línea (horizontal) */
+    display: flex; /* Muestra los ítems en línea (horizontal) */
 }
+/* FIN DE CÓDIGO CRÍTICO */
 
-/* ------------------------------------------- */
-
-nav a {
-    /* ... estilos de los enlaces individuales ... */
-}
-
-/* ... el resto de tu CSS ... */
 nav a {
     color: var(--color-text-light);
     text-decoration: none;
@@ -100,11 +82,13 @@ nav a {
 .btn-cta:hover { background-color: #A01C1C; }
 
 
-/* --- 3. SECCIÓN HERO (Alto Impacto) --- */
+/* --- 3. SECCIÓN HERO (Alto Impacto - Corregido el Margen) --- */
 #hero {
     background: var(--color-surface);
     padding: 180px 5%;
     border-bottom: 5px solid var(--color-alert-danger);
+    /* 🔥 AÑADIDO: Empuja el contenido hacia abajo para que no se oculte tras el header fijo */
+    margin-top: 70px;
 }
 
 #hero h1 {
