@@ -1,53 +1,53 @@
 {
-    "ultima_actualizacion": "13/11/2025 a las 08:08",
-    "resumen_maximo": "Riesgo Máximo: México (Peso) y Brasil (Real) (0.41)",
+    "ultima_actualizacion": "13/11/2025 a las 20:21",
+    "resumen_maximo": "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.63)",
     "top_dependencias": [
         {
             "nombre": "Oro (Refugio)",
-            "puntuacion_irdc": "0.12"
-        },
-        {
-            "nombre": "México (Peso)",
-            "puntuacion_irdc": "0.09"
+            "puntuacion_irdc": "0.14"
         },
         {
             "nombre": "Colombia (Peso)",
-            "puntuacion_irdc": "0.07"
+            "puntuacion_irdc": "0.09"
         },
         {
             "nombre": "Chile (Peso)",
-            "puntuacion_irdc": "0.06"
+            "puntuacion_irdc": "0.09"
+        },
+        {
+            "nombre": "México (Peso)",
+            "puntuacion_irdc": "0.08"
         }
     ],
-    "correlacion_minima": "México (Peso) vs. Cobre Futuros (-0.12)",
+    "correlacion_minima": "Chile (Peso) vs. Cobre Futuros (-0.13)",
     "volatilidad_historica": [
         {
-            "fecha": "20 Dec",
-            "volatilidad": 2.0
+            "fecha": "04 Nov",
+            "volatilidad": 3.36
         },
         {
-            "fecha": "23 Dec",
-            "volatilidad": 13.31
+            "fecha": "05 Nov",
+            "volatilidad": 9.94
         },
         {
-            "fecha": "24 Dec",
-            "volatilidad": 5.28
+            "fecha": "06 Nov",
+            "volatilidad": 4.54
         },
         {
-            "fecha": "26 Dec",
-            "volatilidad": 0.63
+            "fecha": "07 Nov",
+            "volatilidad": 1.85
         },
         {
-            "fecha": "27 Dec",
-            "volatilidad": 2.39
+            "fecha": "10 Nov",
+            "volatilidad": 6.07
         },
         {
-            "fecha": "30 Dec",
-            "volatilidad": 5.36
+            "fecha": "11 Nov",
+            "volatilidad": 3.53
         },
         {
-            "fecha": "31 Dec",
-            "volatilidad": 0.9
+            "fecha": "12 Nov",
+            "volatilidad": 0.81
         }
     ],
     "nexus_nodes": [
@@ -98,44 +98,59 @@
     ],
     "nexus_links": [
         {
+            "source": "CL=F",
+            "target": "GC=F",
+            "correlation": 0.17
+        },
+        {
+            "source": "CL=F",
+            "target": "HG=F",
+            "correlation": 0.17
+        },
+        {
+            "source": "CL=F",
+            "target": "^GSPC",
+            "correlation": 0.24
+        },
+        {
             "source": "CNY=X",
             "target": "USDCLP=X",
-            "correlation": 0.18
+            "correlation": 0.17
         },
         {
             "source": "CNY=X",
             "target": "USDCOP=X",
-            "correlation": 0.17
+            "correlation": 0.21
         },
         {
             "source": "GC=F",
             "target": "HG=F",
-            "correlation": 0.3
+            "correlation": 0.29
         },
         {
             "source": "HG=F",
             "target": "^GSPC",
-            "correlation": 0.26
+            "correlation": 0.18
         },
         {
             "source": "USDBRL=X",
             "target": "USDCLP=X",
-            "correlation": 0.3
+            "correlation": 0.21
         },
         {
             "source": "USDBRL=X",
             "target": "USDCOP=X",
-            "correlation": 0.31
+            "correlation": 0.27
         },
         {
             "source": "USDBRL=X",
             "target": "USDMXN=X",
-            "correlation": 0.41
+            "correlation": 0.48
         },
         {
             "source": "USDCLP=X",
             "target": "USDCOP=X",
-            "correlation": 0.41
+            "correlation": 0.63
         },
         {
             "source": "USDCLP=X",
@@ -145,17 +160,17 @@
         {
             "source": "USDCLP=X",
             "target": "USDPEN=X",
-            "correlation": 0.22
+            "correlation": 0.51
         },
         {
             "source": "USDCOP=X",
             "target": "USDMXN=X",
-            "correlation": 0.33
+            "correlation": 0.31
         },
         {
             "source": "USDCOP=X",
             "target": "USDPEN=X",
-            "correlation": 0.26
+            "correlation": 0.33
         }
     ]
 }
