@@ -182,12 +182,12 @@
 </div>
 <div id="info-tooltip"></div>
 
-            <div class="module-volatilidad-chart" style="margin-top: 50px; padding: 20px; background-color: var(--color-surface); border-radius: 8px;">
-                <h3 style="color: var(--color-text-light); text-align: center; margin-bottom: 20px;">
-                    Volatilidad Cuantificada IRDC (Últimos 7 Días)
-                </h3>
-                <canvas id="volatilityChart" style="max-height: 400px;"></canvas>
-            </div>
+            <div id="nexus-visualization-container" style="margin-top: 50px; padding: 20px; height: 500px; background-color: var(--color-surface); border-radius: 8px;">
+    <h3 style="color: var(--color-text-light); text-align: center; margin-bottom: 20px;">
+        NEXUS DE CORRELACIÓN: Tensión Geo-Financiera (3D)
+    </h3>
+    <div id="nexus-target" style="width: 100%; height: 100%;"></div>
+</div>
             <div class="module-evidence" style="text-align: center; padding: 25px 0; border-top: 1px dashed #333; border-bottom: 1px dashed #333;">
                 <p style="font-size: 1.1rem; color: #aaa; margin-bottom: 15px;">
                     EVIDENCIA CUANTIFICADA: MAPA DE CALOR Y VOLATILIDAD IRDC.
@@ -211,135 +211,148 @@
 </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="//unpkg.com/force-graph"></script>
     <script src="components.js"></script>
 
     <script>
         const JSON_URL = 'data.json';
 
-        function loadAnalysis() {
-            fetch(JSON_URL)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // --- PARSEO Y APLICACIÓN DE DATOS ---
+       function loadAnalysis() {
+    fetch(JSON_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // --- PARSEO Y APLICACIÓN DE DATOS ---
 
-                    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
-                    const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
-                    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
+            const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
+            const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
+            const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
 
-                    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
-                    const minCifra = minMatch ? minMatch[1] : 'N/A';
-                    const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(`(${minCifra})`, '').trim();
+            const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
+            const minCifra = minMatch ? minMatch[1] : 'N/A';
+            const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(`(${minCifra})`, '').trim();
 
-                    // 1. Dashboard - Módulo Contagio Mayor
-                    document.getElementById('resumen-maximo-data').textContent = maxCifra;
-                    document.getElementById('pares-afectados-data').textContent = maxPares;
+            // 1. Dashboard - Módulo Contagio Mayor
+            document.getElementById('resumen-maximo-data').textContent = maxCifra;
+            document.getElementById('pares-afectados-data').textContent = maxPares;
 
-                    // 2. Dashboard - Módulo Blindaje
-                    document.getElementById('correlacion-minima-data').textContent = minCifra;
-                    document.getElementById('pares-cobertura-data').textContent = minPares;
+            // 2. Dashboard - Módulo Blindaje
+            document.getElementById('correlacion-minima-data').textContent = minCifra;
+            document.getElementById('pares-cobertura-data').textContent = minPares;
 
-                    document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
+            document.getElementById('fecha-actualizacion').textContent = data.ultima_actualizacion;
 
-                    const ctaMini = document.querySelector('.cta-mini');
-                    if (ctaMini) {
-                        ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
-                    }
+            const ctaMini = document.querySelector('.cta-mini');
+            if (ctaMini) {
+                ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
+            }
 
-                    // --- DIBUJAR GRÁFICO DE VOLATILIDAD CON CHART.JS ---
-                    const ctx = document.getElementById('volatilityChart');
+            // --- 💥 LLAMADA AL NEXUS 3D (REEMPLAZA EL CÓDIGO DE CHART.JS) 💥 ---
+            if (data.nexus_nodes && data.nexus_links) {
+                drawNexus(data.nexus_nodes, data.nexus_links);
+            } else {
+                 console.error("❌ ERROR: No se encontraron datos de 'nexus_nodes' y 'nexus_links' en el JSON.");
+            }
+            // --- FIN DE LA LLAMADA AL NEXUS 3D ---
 
-                    if (ctx && data.volatilidad_historica) {
-                        const labels = data.volatilidad_historica.map(item => item.fecha);
-                        const volatilityData = data.volatilidad_historica.map(item => item.volatilidad);
+            console.log("✅ Datos de Análisis Cuantitativo cargados.");
+        })
+        .catch(error => {
+            console.error('❌ Error al cargar o procesar datos JSON:', error);
+            // Failsafe (lo que ves ahora)
+            document.getElementById('resumen-maximo-data').textContent = '— OFFLINE —';
+            document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('correlacion-minima-data').textContent = '— OFFLINE —';
+            document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
+            const ctaMini = document.querySelector('.cta-mini');
+            if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ.`; }
+        });
+}
 
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: 'IRDC - Índice de Riesgo de Divisa y Contagio',
-                                    data: volatilityData,
-                                    borderColor: '#FFC300',
-                                    backgroundColor: 'rgba(255, 195, 0, 0.2)',
-                                    borderWidth: 2,
-                                    tension: 0.4,
-                                    pointRadius: 4,
-                                    pointBackgroundColor: '#D81E1E'
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: { legend: { display: true, labels: { color: '#B0B0B0' } } },
-                                scales: {
-                                    x: { title: { display: true, text: 'Días (Histórico)', color: '#888' }, ticks: { color: '#B0B0B0' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-                                    y: { title: { display: true, text: 'IRDC (Escala)', color: '#888' }, ticks: { color: '#B0B0B0' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
-                                }
-                            }
-                        });
-                    }
-                    console.log("✅ Datos de Análisis Cuantitativo cargados.");
-                })
-                .catch(error => {
-                    console.error('❌ Error al cargar o procesar datos JSON:', error);
-                    // Failsafe (lo que ves ahora)
-                    document.getElementById('resumen-maximo-data').textContent = '— OFFLINE —';
-                    document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
-                    document.getElementById('correlacion-minima-data').textContent = '— OFFLINE —';
-                    document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
-                    document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
-                    const ctaMini = document.querySelector('.cta-mini');
-                    if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ.`; }
-                });
-        }
+function updateAIAuditDate() {
+    // ... (Tu código de auditoría sigue igual) ...
+    const now = new Date();
+    const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+    const formattedDate = now.toLocaleDateString('es-CL', options).replace(/\//g, '/') + ' | ' + now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-        function updateAIAuditDate() {
-            const now = new Date();
-            const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
-            const formattedDate = now.toLocaleDateString('es-CL', options).replace(/\//g, '/') + ' | ' + now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
+    // Simula la supervisión de la Biblioteca
+    const auditElements = document.querySelectorAll('.metadata span');
+    auditElements.forEach(el => {
+        el.textContent = `Auditado ${formattedDate}`;
+    });
 
-            // Simula la supervisión de la Biblioteca
-            const auditElements = document.querySelectorAll('.metadata span');
-            auditElements.forEach(el => {
-                el.textContent = `Auditado ${formattedDate}`;
-            });
+    setTimeout(updateAIAuditDate, 30000);
+}
 
-            setTimeout(updateAIAuditDate, 30000);
-        }
+// Función para activar los Tooltips
+function setupTooltips() {
+    // ... (Tu código de Tooltips sigue igual) ...
+    const triggers = document.querySelectorAll('.tooltip-trigger');
+    const tooltip = document.getElementById('info-tooltip');
 
-        // Función para activar los Tooltips
-        function setupTooltips() {
-            const triggers = document.querySelectorAll('.tooltip-trigger');
-            const tooltip = document.getElementById('info-tooltip');
+    triggers.forEach(trigger => {
+        const infoText = trigger.getAttribute('data-info');
 
-            triggers.forEach(trigger => {
-                const infoText = trigger.getAttribute('data-info');
+        // Evento: Mouse entra al módulo
+        trigger.addEventListener('mousemove', (e) => {
+            tooltip.textContent = infoText;
+            tooltip.style.left = (e.pageX + 15) + 'px';
+            tooltip.style.top = (e.pageY + 15) + 'px';
+            tooltip.style.visibility = 'visible';
+            tooltip.style.opacity = '1';
+        });
 
-                // Evento: Mouse entra al módulo
-                trigger.addEventListener('mousemove', (e) => {
-                    tooltip.textContent = infoText;
-                    tooltip.style.left = (e.pageX + 15) + 'px';
-                    tooltip.style.top = (e.pageY + 15) + 'px';
-                    tooltip.style.visibility = 'visible';
-                    tooltip.style.opacity = '1';
-                });
+        // Evento: Mouse sale del módulo
+        trigger.addEventListener('mouseleave', () => {
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+        });
+    });
+}
 
-                // Evento: Mouse sale del módulo
-                trigger.addEventListener('mouseleave', () => {
-                    tooltip.style.visibility = 'hidden';
-                    tooltip.style.opacity = '0';
-                });
-            });
-        }
+// 💥 FUNCIÓN PARA DIBUJAR EL NEXUS (Añadida aquí) 💥
+function drawNexus(nodes, links) {
+    const container = document.getElementById('nexus-target');
 
-        document.addEventListener('DOMContentLoaded', loadAnalysis);
-        document.addEventListener('DOMContentLoaded', updateAIAuditDate);
-        document.addEventListener('DOMContentLoaded', setupTooltips); // Llama a la función de Tooltips
+    // Mapeo para estilos condicionales (Rojo Neón para riesgo, Cían para cobertura)
+    const CORRELATION_COLOR_MAP = (corr) => {
+        if (corr >= 0.4) return 'rgba(255, 30, 30, 0.9)';
+        if (corr <= -0.15) return 'rgba(30, 255, 255, 0.9)';
+        return 'rgba(255, 255, 255, 0.3)';
+    };
+
+    // Inicializa el gráfico 3D en el contenedor
+    const Graph = ForceGraph()(container)
+        .graphData({ nodes: nodes, links: links })
+        .nodeId('id')
+        .nodeLabel('name')
+
+        // Estilos del Nodo
+        .nodeAutoColorBy('name')
+        .nodeVal(node => {
+            return (node.id === '^GSPC' || node.id === 'CNY=X') ? 30 : 10;
+        })
+        .nodeRelSize(4)
+
+        // Estilos de los Enlaces (Las líneas de correlación)
+        .linkLabel(link => `Correlación: ${link.correlation}`)
+        .linkWidth(link => Math.abs(link.correlation) * 8)
+        .linkColor(link => CORRELATION_COLOR_MAP(link.correlation))
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1);
+
+    // Ajustes de Cámara 3D
+    Graph.cameraPosition({ z: 600 });
+}
+
+document.addEventListener('DOMContentLoaded', loadAnalysis);
+document.addEventListener('DOMContentLoaded', updateAIAuditDate);
+document.addEventListener('DOMContentLoaded', setupTooltips);
     </script>
 </body>
 </html>
