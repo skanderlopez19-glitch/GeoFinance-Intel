@@ -1,5 +1,5 @@
 {
-    "ultima_actualizacion": "11/11/2025 a las 22:25",
+    "ultima_actualizacion": "12/11/2025 a las 22:45",
     "resumen_maximo": "Riesgo Máximo: México (Peso) y Brasil (Real) (0.41)",
     "top_dependencias": [
         {
@@ -19,5 +19,143 @@
             "puntuacion_irdc": "0.06"
         }
     ],
-    "correlacion_minima": "México (Peso) vs. Cobre Futuros (-0.12)"
+    "correlacion_minima": "México (Peso) vs. Cobre Futuros (-0.12)",
+    "volatilidad_historica": [
+        {
+            "fecha": "20 Dec",
+            "volatilidad": 2.0
+        },
+        {
+            "fecha": "23 Dec",
+            "volatilidad": 13.31
+        },
+        {
+            "fecha": "24 Dec",
+            "volatilidad": 5.28
+        },
+        {
+            "fecha": "26 Dec",
+            "volatilidad": 0.63
+        },
+        {
+            "fecha": "27 Dec",
+            "volatilidad": 2.39
+        },
+        {
+            "fecha": "30 Dec",
+            "volatilidad": 5.36
+        },
+        {
+            "fecha": "31 Dec",
+            "volatilidad": 0.9
+        }
+    ],
+    "nexus_nodes": [
+        {
+            "id": "CL=F",
+            "name": "Petróleo WTI"
+        },
+        {
+            "id": "CNY=X",
+            "name": "China (Yuan)"
+        },
+        {
+            "id": "GC=F",
+            "name": "Oro (Refugio)"
+        },
+        {
+            "id": "HG=F",
+            "name": "Cobre Futuros"
+        },
+        {
+            "id": "USDARS=X",
+            "name": "Argentina (Peso)"
+        },
+        {
+            "id": "USDBRL=X",
+            "name": "Brasil (Real)"
+        },
+        {
+            "id": "USDCLP=X",
+            "name": "Chile (Peso)"
+        },
+        {
+            "id": "USDCOP=X",
+            "name": "Colombia (Peso)"
+        },
+        {
+            "id": "USDMXN=X",
+            "name": "México (Peso)"
+        },
+        {
+            "id": "USDPEN=X",
+            "name": "Perú (Sol)"
+        },
+        {
+            "id": "^GSPC",
+            "name": "EE. UU. (S&P 500)"
+        }
+    ],
+    "nexus_links": [
+        {
+            "source": "CNY=X",
+            "target": "USDCLP=X",
+            "correlation": 0.18
+        },
+        {
+            "source": "CNY=X",
+            "target": "USDCOP=X",
+            "correlation": 0.17
+        },
+        {
+            "source": "GC=F",
+            "target": "HG=F",
+            "correlation": 0.3
+        },
+        {
+            "source": "HG=F",
+            "target": "^GSPC",
+            "correlation": 0.26
+        },
+        {
+            "source": "USDBRL=X",
+            "target": "USDCLP=X",
+            "correlation": 0.3
+        },
+        {
+            "source": "USDBRL=X",
+            "target": "USDCOP=X",
+            "correlation": 0.31
+        },
+        {
+            "source": "USDBRL=X",
+            "target": "USDMXN=X",
+            "correlation": 0.41
+        },
+        {
+            "source": "USDCLP=X",
+            "target": "USDCOP=X",
+            "correlation": 0.41
+        },
+        {
+            "source": "USDCLP=X",
+            "target": "USDMXN=X",
+            "correlation": 0.28
+        },
+        {
+            "source": "USDCLP=X",
+            "target": "USDPEN=X",
+            "correlation": 0.22
+        },
+        {
+            "source": "USDCOP=X",
+            "target": "USDMXN=X",
+            "correlation": 0.33
+        },
+        {
+            "source": "USDCOP=X",
+            "target": "USDPEN=X",
+            "correlation": 0.26
+        }
+    ]
 }
