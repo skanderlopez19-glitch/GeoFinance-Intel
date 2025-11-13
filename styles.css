@@ -52,6 +52,35 @@ header {
     letter-spacing: 3px;
 }
 
+
+/* --- 2. HEADER Y NAVEGACIÓN --- */
+header {
+    /* ... estilos de header ... */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    /* ... estilos del logo ... */
+}
+
+/* ⬅️ AÑADE ESTE CÓDIGO FALTANTE AQUÍ ⬅️ */
+
+.main-nav ul {
+    list-style: none; /* Elimina los puntos predeterminados */
+    padding: 0;
+    margin: 0;
+    display: flex; /* 🔥 CRÍTICO: Muestra los <li> en línea (horizontal) */
+}
+
+/* ------------------------------------------- */
+
+nav a {
+    /* ... estilos de los enlaces individuales ... */
+}
+
+/* ... el resto de tu CSS ... */
 nav a {
     color: var(--color-text-light);
     text-decoration: none;
