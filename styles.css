@@ -27,11 +27,11 @@ body {
     /* Efecto de fondo sutil: simula una pantalla de monitor/código */
     background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    /* CRÍTICO: El contenido del body no debe tener padding-top si el HERO tiene margin-top */
+    background-attachment: fixed; /* AÑADIDO: Fija el fondo táctico */
 }
 
 /* --- 2. HEADER Y NAVEGACIÓN (Corregido y Unificado) --- */
-#main-header { /* Usamos el ID del HTML corregido */
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,10 +39,10 @@ body {
     background-color: var(--color-surface);
     border-bottom: 3px solid var(--color-accent-primary);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    /* ⚠️ CRÍTICO: Cambiado a fixed para que el menú no desaparezca al hacer scroll */
+    /* ⚠️ MODIFICADO: De sticky a fixed */
     position: fixed;
     top: 0;
-    width: 100%;
+    width: 100%; /* Asegura que cubra todo el ancho */
     z-index: 1000;
 }
 
@@ -54,13 +54,14 @@ body {
     letter-spacing: 3px;
 }
 
-/* 🔥 CÓDIGO CRÍTICO FALTANTE: ALINEACIÓN HORIZONTAL DEL MENÚ */
+/* 🔥 AÑADIDO: ALINEACIÓN HORIZONTAL DEL MENÚ */
 .main-nav ul {
-    list-style: none; /* Elimina los puntos */
+    list-style: none;
     padding: 0;
     margin: 0;
-    display: flex; /* Muestra los ítems en línea (horizontal) */
+    display: flex; /* CRÍTICO: Alinea los links horizontalmente */
 }
+
 /* FIN DE CÓDIGO CRÍTICO */
 
 nav a {
@@ -87,7 +88,7 @@ nav a {
     background: var(--color-surface);
     padding: 180px 5%;
     border-bottom: 5px solid var(--color-alert-danger);
-    /* 🔥 AÑADIDO: Empuja el contenido hacia abajo para que no se oculte tras el header fijo */
+    /* ✅ AÑADIDO: Baja la sección para que no se oculte tras el header fijo */
     margin-top: 70px;
 }
 
@@ -199,11 +200,13 @@ h3 {
 }
 
 /* RIESGO MÁXIMO (ROJO CRÍTICO) - MÓDULO GIGANTE */
+/* RIESGO MÁXIMO (ROJO CRÍTICO) */
 .module-risk-alert {
-    width: 65%; /* Más prominente */
+    width: 65%;
     border: 3px solid var(--color-alert-danger);
-    box-shadow: 0 0 30px rgba(216, 30, 30, 0.5); /* Neón Crítico */
-    background-color: rgba(216, 30, 30, 0.08); /* Fondo de alarma */
+    /* 💥 MODIFICADO: Resplandor más fuerte */
+    box-shadow: 0 0 45px rgba(216, 30, 30, 0.7);
+    background-color: rgba(216, 30, 30, 0.12); /* Fondo de alarma ligeramente más visible */
     border-radius: 5px;
     transition: transform 0.3s ease;
 }
@@ -218,10 +221,11 @@ h3 {
 
 /* BLINDAJE ESTRATÉGICO (AMARILLO TÁCTICO) */
 .module-blindaje {
-    width: 35%; /* Más angosto */
+    width: 35%;
     border: 3px solid var(--color-accent-primary);
-    box-shadow: 0 0 25px rgba(255, 195, 0, 0.4); /* Resplandor Neón Amarillo */
-    background-color: rgba(255, 195, 0, 0.08);
+    /* 💥 MODIFICADO: Resplandor más fuerte */
+    box-shadow: 0 0 35px rgba(255, 195, 0, 0.5);
+    background-color: rgba(255, 195, 0, 0.12);
     border-radius: 5px;
     text-align: left;
 }
