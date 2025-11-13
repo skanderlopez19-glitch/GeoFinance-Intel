@@ -247,3 +247,29 @@ h3 {
     background-color: var(--color-surface); /* Banda oscura */
     margin-top: 40px;
 }
+
+/* --- 6. ESTILOS DE TOOLTIP (Capa de Inteligencia Simplificada) --- */
+#info-tooltip {
+    position: fixed; /* Fijo en la pantalla */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none; /* Permite hacer clic a través de él cuando está oculto */
+
+    /* Diseño Neón Táctico */
+    background-color: var(--color-surface);
+    color: var(--color-text-light);
+    border: 1px solid var(--color-accent-primary);
+    padding: 10px 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(255, 195, 0, 0.4); /* Resplandor Neón */
+
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    max-width: 300px;
+    z-index: 2000; /* Asegura que esté por encima de todo */
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.tooltip-trigger {
+    cursor: help; /* Cambia el cursor para indicar que es interactivo */
+}

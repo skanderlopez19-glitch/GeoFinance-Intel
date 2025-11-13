@@ -135,47 +135,52 @@
 
             <div class="critical-panels" style="display: flex; justify-content: space-between; gap: 40px;">
 
-                <div class="module-risk-alert" style="width: 60%; padding: 40px; border: 3px solid var(--color-alert-danger); background-color: rgba(216, 30, 30, 0.05); text-align: left;">
-                    <h3 style="color: var(--color-alert-danger); font-family: var(--font-heading); margin-bottom: 20px;">
-                        ALERTA CRÍTICA: BLOQUE DE CONTAGIO
-                    </h3>
+    <div class="module-risk-alert tooltip-trigger"
+         data-info="Este módulo muestra el grado de contagio más alto. Indica qué dos activos LATAM son más sensibles a chocar y moverse al mismo tiempo, amplificando el riesgo regional."
+         style="width: 60%; padding: 40px; border: 3px solid var(--color-alert-danger); background-color: rgba(216, 30, 30, 0.12); text-align: left;">
+        <h3 style="color: var(--color-alert-danger); font-family: var(--font-heading); margin-bottom: 20px;">
+            ALERTA CRÍTICA: BLOQUE DE CONTAGIO
+        </h3>
 
-                    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 20px;">
-                        <p id="resumen-maximo-data" style="font-family: var(--font-body); font-size: 5rem; font-weight: 700; color: var(--color-alert-danger); line-height: 1;">
-                            Cargando...
-                        </p>
-                        <div style="text-align: right;">
-                            <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">RIESGO MÁXIMO GLOBAL</p>
-                            <p id="fecha-actualizacion" style="font-size: 0.9rem; color: #888;">Cargando...</p>
-                        </div>
-                    </div>
-
-                    <hr style="border-color: rgba(216, 30, 30, 0.4); margin: 20px 0;">
-
-                    <p style="font-size: 1.4rem; color: #fff; font-weight: bold; margin-bottom: 5px;">PARES AFECTADOS:</p>
-                    <p id="pares-afectados-data" style="font-family: var(--font-body); font-size: 1.2rem; color: var(--color-accent-primary);">
-                        Cargando...
-                    </p>
-                </div>
-
-                <div class="module-blindaje" style="width: 40%; padding: 40px; border: 3px solid var(--color-accent-primary); background-color: rgba(255, 195, 0, 0.05); text-align: left;">
-                    <h3 style="color: var(--color-accent-primary); font-family: var(--font-heading); margin-bottom: 20px;">
-                        ACCIÓN: BLINDAJE ESTRATÉGICO
-                    </h3>
-
-                    <p style="font-size: 1.2rem; color: #fff; margin-bottom: 15px; margin-top: 20px;">OPORTUNIDAD DE COBERTURA:</p>
-                    <p id="correlacion-minima-data" style="font-family: var(--font-heading); font-size: 3rem; font-weight: 700; color: var(--color-accent-primary); line-height: 1;">
-                        Cargando...
-                    </p>
-
-                    <hr style="border-color: rgba(255, 195, 0, 0.4); margin: 20px 0;">
-
-                    <p id="pares-cobertura-data" style="font-size: 1rem; color: #fff; margin-bottom: 5px;">
-                        Cargando...
-                    </p>
-                    <p style="font-size: 1rem; color: var(--color-alert-danger); font-weight: bold;">ACTIVO REFUGIO: ORO (GC=F)</p>
-                </div>
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 20px;">
+            <p id="resumen-maximo-data" style="font-family: var(--font-body); font-size: 5rem; font-weight: 700; color: var(--color-alert-danger); line-height: 1;">
+                Cargando...
+            </p>
+            <div style="text-align: right;">
+                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">RIESGO MÁXIMO GLOBAL</p>
+                <p id="fecha-actualizacion" style="font-size: 0.9rem; color: #888;">Cargando...</p>
             </div>
+        </div>
+
+        <hr style="border-color: rgba(216, 30, 30, 0.4); margin: 20px 0;">
+
+        <p style="font-size: 1.4rem; color: #fff; font-weight: bold; margin-bottom: 5px;">PARES AFECTADOS:</p>
+        <p id="pares-afectados-data" style="font-family: var(--font-body); font-size: 1.2rem; color: var(--color-accent-primary);">
+            Cargando...
+        </p>
+    </div>
+
+    <div class="module-blindaje tooltip-trigger"
+         data-info="Esta sección identifica la mejor 'póliza de seguro' para su cartera. Muestra el activo que tiene la correlación más baja o negativa con el resto, protegiéndolo en caso de caída."
+         style="width: 40%; padding: 40px; border: 3px solid var(--color-accent-primary); background-color: rgba(255, 195, 0, 0.12); text-align: left;">
+        <h3 style="color: var(--color-accent-primary); font-family: var(--font-heading); margin-bottom: 20px;">
+            ACCIÓN: BLINDAJE ESTRATÉGICO
+        </h3>
+
+        <p style="font-size: 1.2rem; color: #fff; margin-bottom: 15px; margin-top: 20px;">OPORTUNIDAD DE COBERTURA:</p>
+        <p id="correlacion-minima-data" style="font-family: var(--font-heading); font-size: 3rem; font-weight: 700; color: var(--color-accent-primary); line-height: 1;">
+            Cargando...
+        </p>
+
+        <hr style="border-color: rgba(255, 195, 0, 0.4); margin: 20px 0;">
+
+        <p id="pares-cobertura-data" style="font-size: 1rem; color: #fff; margin-bottom: 5px;">
+            Cargando...
+        </p>
+        <p style="font-size: 1rem; color: var(--color-alert-danger); font-weight: bold;">ACTIVO REFUGIO: ORO (GC=F)</p>
+    </div>
+</div>
+<div id="info-tooltip"></div>
 
             <div class="module-volatilidad-chart" style="margin-top: 50px; padding: 20px; background-color: var(--color-surface); border-radius: 8px;">
                 <h3 style="color: var(--color-text-light); text-align: center; margin-bottom: 20px;">
@@ -310,5 +315,54 @@
         document.addEventListener('DOMContentLoaded', loadAnalysis);
         document.addEventListener('DOMContentLoaded', updateAIAuditDate);
     </script>
+<div class="critical-panels" style="display: flex; justify-content: space-between; gap: 40px;">
+
+    <div class="module-risk-alert tooltip-trigger"
+         data-info="Este módulo muestra el grado de contagio más alto. Indica qué dos activos LATAM son más sensibles a chocar y moverse al mismo tiempo, amplificando el riesgo regional."
+         style="width: 60%; padding: 40px; border: 3px solid var(--color-alert-danger); background-color: rgba(216, 30, 30, 0.12); text-align: left;">
+        <h3 style="color: var(--color-alert-danger); font-family: var(--font-heading); margin-bottom: 20px;">
+            ALERTA CRÍTICA: BLOQUE DE CONTAGIO
+        </h3>
+
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 20px;">
+            <p id="resumen-maximo-data" style="font-family: var(--font-body); font-size: 5rem; font-weight: 700; color: var(--color-alert-danger); line-height: 1;">
+                Cargando...
+            </p>
+            <div style="text-align: right;">
+                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">RIESGO MÁXIMO GLOBAL</p>
+                <p id="fecha-actualizacion" style="font-size: 0.9rem; color: #888;">Cargando...</p>
+            </div>
+        </div>
+
+        <hr style="border-color: rgba(216, 30, 30, 0.4); margin: 20px 0;">
+
+        <p style="font-size: 1.4rem; color: #fff; font-weight: bold; margin-bottom: 5px;">PARES AFECTADOS:</p>
+        <p id="pares-afectados-data" style="font-family: var(--font-body); font-size: 1.2rem; color: var(--color-accent-primary);">
+            Cargando...
+        </p>
+    </div>
+
+    <div class="module-blindaje tooltip-trigger"
+         data-info="Esta sección identifica la mejor 'póliza de seguro' para su cartera. Muestra el activo que tiene la correlación más baja o negativa con el resto, protegiéndolo en caso de caída."
+         style="width: 40%; padding: 40px; border: 3px solid var(--color-accent-primary); background-color: rgba(255, 195, 0, 0.12); text-align: left;">
+        <h3 style="color: var(--color-accent-primary); font-family: var(--font-heading); margin-bottom: 20px;">
+            ACCIÓN: BLINDAJE ESTRATÉGICO
+        </h3>
+
+        <p style="font-size: 1.2rem; color: #fff; margin-bottom: 15px; margin-top: 20px;">OPORTUNIDAD DE COBERTURA:</p>
+        <p id="correlacion-minima-data" style="font-family: var(--font-heading); font-size: 3rem; font-weight: 700; color: var(--color-accent-primary); line-height: 1;">
+            Cargando...
+        </p>
+
+        <hr style="border-color: rgba(255, 195, 0, 0.4); margin: 20px 0;">
+
+        <p id="pares-cobertura-data" style="font-size: 1rem; color: #fff; margin-bottom: 5px;">
+            Cargando...
+        </p>
+        <p style="font-size: 1rem; color: var(--color-alert-danger); font-weight: bold;">ACTIVO REFUGIO: ORO (GC=F)</p>
+    </div>
+</div>
+<div id="info-tooltip"></div>
+
 </body>
 </html>
