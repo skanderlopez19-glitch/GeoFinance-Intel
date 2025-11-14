@@ -17,14 +17,13 @@ connectedCallback() {
             </div>
             <nav>
                 <a href="/GeoFinance-Intel/index.html">Inicio</a>
-                <a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría</a>
-                <a href="/GeoFinance-Intel/frente-este-ensayo.html">Crisis</a>
-                <a href="/GeoFinance-Intel/analisis-rol-china.html">Análisis</a>
+                <a href="/GeoFinance-Intel/geoweb/analisis-metodologia-irdc.html">Teoría</a>
+                <a href="/GeoFinance-Intel/geoweb/frente-este-ensayo.html">Crisis</a>
+                <a href="/GeoFinance-Intel/geoweb/analisis-rol-china.html">Análisis</a>
                 <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
             </nav>
         </header>
     `;
-}
 }
 
 customElements.define('main-header', Header);
@@ -56,8 +55,8 @@ customElements.define('main-footer', Footer);
 // =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
-// 💡 SOLUCIÓN FINAL (Ajuste): La ruta relativa al repositorio (nombre_repo/data.json)
-const JSON_URL = '/GeoFinance-Intel/data.json';
+// ¡Tu corrección es la correcta!
+const JSON_URL = '/GeoFinance-Intel/geoweb/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
