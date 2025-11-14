@@ -1,21 +1,18 @@
 {
-    "ultima_actualizacion": "14/11/2025 a las 07:22",
+    "ultima_actualizacion": "14/11/2025 a las 19:14",
     "resumen_maximo": "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.64)",
     "top_dependencias": [
-        // ... (Todas las claves deben tener comillas dobles, incluyendo "nombre", "puntuacion_irdc", "fecha", "volatilidad", etc.)
-    ],
-    // ...
-}
+        {
             "nombre": "Oro (Refugio)",
             "puntuacion_irdc": "0.14"
         },
         {
-            "nombre": "Colombia (Peso)",
-            "puntuacion_irdc": "0.09"
+            "nombre": "Chile (Peso)",
+            "puntuacion_irdc": "0.08"
         },
         {
-            "nombre": "Chile (Peso)",
-            "puntuacion_irdc": "0.09"
+            "nombre": "Colombia (Peso)",
+            "puntuacion_irdc": "0.08"
         },
         {
             "nombre": "México (Peso)",
@@ -24,10 +21,6 @@
     ],
     "correlacion_minima": "Chile (Peso) vs. Cobre Futuros (-0.13)",
     "volatilidad_historica": [
-        {
-            "fecha": "04 Nov",
-            "volatilidad": 3.36
-        },
         {
             "fecha": "05 Nov",
             "volatilidad": 9.94
@@ -50,6 +43,10 @@
         },
         {
             "fecha": "12 Nov",
+            "volatilidad": 3.37
+        },
+        {
+            "fecha": "13 Nov",
             "volatilidad": 0.81
         }
     ],
@@ -113,7 +110,7 @@
         {
             "source": "CL=F",
             "target": "^GSPC",
-            "correlation": 0.24
+            "correlation": 0.23
         },
         {
             "source": "CNY=X",
@@ -143,7 +140,7 @@
         {
             "source": "USDBRL=X",
             "target": "USDCOP=X",
-            "correlation": 0.27
+            "correlation": 0.26
         },
         {
             "source": "USDBRL=X",
@@ -163,7 +160,7 @@
         {
             "source": "USDCLP=X",
             "target": "USDPEN=X",
-            "correlation": 0.51
+            "correlation": 0.5
         },
         {
             "source": "USDCOP=X",
@@ -173,7 +170,7 @@
         {
             "source": "USDCOP=X",
             "target": "USDPEN=X",
-            "correlation": 0.33
+            "correlation": 0.32
         }
     ]
 }
