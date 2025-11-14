@@ -7,13 +7,12 @@ class Header extends HTMLElement {
         super();
     }
 
-  // En la clase Header:
 // En la clase Header:
 connectedCallback() {
     this.innerHTML = `
         <header>
             <div class="logo">
-                <img src="images/logo-geofinance.png" alt="GeoFinance Intel Logo">
+                <img src="/GeoFinance-Intel/images/logo-geofinance.png" alt="GeoFinance Intel Logo">
                 <h1>GEOFINANCE INTEL</h1>
             </div>
             <nav>
@@ -25,6 +24,7 @@ connectedCallback() {
             </nav>
         </header>
     `;
+}
 }
 
 customElements.define('main-header', Header);
@@ -56,10 +56,8 @@ customElements.define('main-footer', Footer);
 // =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
-// 💡 SOLUCIÓN FINAL: Se usa la ruta absoluta /data.json
-// Esto asegura que se busca desde la raíz del dominio de GitHub Pages,
-// resolviendo el fallo de conexión estática.
-const JSON_URL = 'https://skanderlopez19-glitch.github.io/GeoFinance-Intel/data.json';
+// 💡 SOLUCIÓN FINAL (Ajuste): La ruta relativa al repositorio (nombre_repo/data.json)
+const JSON_URL = '/GeoFinance-Intel/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
