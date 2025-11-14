@@ -7,7 +7,7 @@ class Header extends HTMLElement {
         super();
     }
 
-// En la clase Header:
+// En components.js, en la clase Header:
 // En components.js, en la clase Header
 connectedCallback() {
     this.innerHTML = `
@@ -17,12 +17,13 @@ connectedCallback() {
                 <h1>GEOFINANCE INTEL</h1>
             </div>
             <nav>
-    <a href="/GeoFinance-Intel/">Inicio</a>  <a href="/GeoFinance-Intel/geoweb/analisis-metodologia-irdc.html">Teoría</a>
-    <a href="/GeoFinance-Intel/geoweb/analisis-frente-este.html">Crisis</a>
-    <a href="/GeoFinance-Intel/geoweb/analisis-rol-china.html">Análisis</a>
+    <a href="/GeoFinance-Intel/">Inicio</a>
+
+    <a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría</a>
+    <a href="/GeoFinance-Intel/analisis-frente-este.html">Crisis</a>
+    <a href="/GeoFinance-Intel/analisis-rol-china.html">Análisis</a>
     <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
 </nav>
-// ... (resto del código)
         </header>
     `;
 }
