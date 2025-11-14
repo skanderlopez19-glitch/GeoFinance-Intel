@@ -134,13 +134,15 @@
 <main-footer></main-footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/force-graph@1.44.1/dist/force-graph.min.js"></script>
+
     <script src="/GeoFinance-Intel/components.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Aseguramos que la lógica de carga esté definida en components.js
             if (typeof loadAnalysis === 'function') {
                 loadAnalysis();
-                setupTooltips();
+                // Si tienes una función setupTooltips(), llámala aquí
+                // setupTooltips();
             } else {
                 console.error("CRITICAL ERROR: La función loadAnalysis no se definió en components.js.");
             }

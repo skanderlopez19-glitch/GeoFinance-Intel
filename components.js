@@ -7,8 +7,7 @@ class Header extends HTMLElement {
         super();
     }
 
-// En components.js, en la clase Header:
-// En components.js, en la clase Header
+// En la clase Header: RUTAS PLANAS CORREGIDAS
 connectedCallback() {
     this.innerHTML = `
         <header>
@@ -54,18 +53,17 @@ customElements.define('main-footer', Footer);
 
 
 // =================================================================
-// =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
-// ¡Tu corrección es la correcta
-// CORREGIDO: data.json está en la raíz del repositorio
+// RUTA ABSOLUTA FINAL
 const JSON_URL = '/GeoFinance-Intel/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
         .then(response => {
             if (!response.ok) {
-                // Generará un error si es 404 (Not Found) o 400 (Bad Request)
+                // Si el error no es 404, puede ser un JSON inválido (status 200 pero parseo falla)
+                // Se agregó la regeneración de data.json para mitigar esto.
                 throw new Error(`Error HTTP: ${response.status} - No se encontró data.json en la ruta: ${JSON_URL}`);
             }
             return response.json();
@@ -88,8 +86,6 @@ function loadAnalysis() {
             if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Revise consola (F12).`; }
         });
 }
-// ... (El resto del código JavaScript sigue igual)
-
 
 // =================================================================
 // 3. FUNCIÓN PARA ACTUALIZAR LOS ELEMENTOS DEL DASHBOARD
