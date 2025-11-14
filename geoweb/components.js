@@ -50,34 +50,51 @@ class Footer extends HTMLElement {
 
 customElements.define('main-footer', Footer);
 
+
 // =================================================================
-// 5. MÓDULO DE RENDERING 3D (CORRECCIÓN DE ERRORES)
+// 5. MÓDULO DE RENDERING 3D (DE VUELTA EN EL ARCHIVO DE LÓGICA)
 // =================================================================
 
-function renderizarNexus3D(data) {
-    const container = document.getElementById('nexus-3d-container');
+// NOTA: Esta función se define sin llamar a ForceGraph3D directamente,
+// ya que ForceGraph debe ser llamado con ForceGraph()() si no está en un namespace global.
+// Asumiremos que el script de ForceGraph está cargado en el index.html.
+
+function drawNexus(nodes, links) {
+    const container = document.getElementById('nexus-target');
     if (!container) {
-        console.warn("Contenedor 'nexus-3d-container' no encontrado. Gráfico 3D no renderizado.");
+        console.warn("Contenedor 'nexus-target' no encontrado. Gráfico 3D no renderizado.");
+        return;
+    }
+    if (typeof ForceGraph === 'undefined') {
+        console.error("Librería ForceGraph no cargada. No se puede renderizar el Nexus.");
         return;
     }
 
-    // Usamos la variable global de la librería (ForceGraph3D)
-    // Se elimina la llamada a cameraPosition que causaba el TypeError.
-    if (typeof ForceGraph3D !== 'undefined') {
-        const Graph = ForceGraph3D()
-            (container)
-            .graphData({ nodes: data.nexus_nodes, links: data.nexus_links })
-            .nodeLabel('name')
-            .linkWidth(link => Math.abs(link.correlation) * 4)
-            .linkColor(link => link.correlation > 0 ? '#FF0000' : '#00FFFF')
-            .linkDirectionalArrowLength(3.5)
-            .linkDirectionalArrowRelPos(1);
+    const CORRELATION_COLOR_MAP = (corr) => {
+        if (corr >= 0.4) return 'rgba(255, 30, 30, 0.9)';
+        if (corr <= -0.15) return 'rgba(30, 255, 255, 0.9)';
+        return 'rgba(255, 255, 255, 0.3)';
+    };
 
-        console.log("Nexus de Correlación 3D Renderizado con éxito.");
-    } else {
-        console.error("Librería ForceGraph3D no cargada. No se puede renderizar el Nexus.");
-    }
+    const Graph = ForceGraph()(container)
+        .graphData({ nodes: nodes, links: links })
+        .nodeId('id')
+        .nodeLabel('name')
+        .nodeAutoColorBy('name')
+        .nodeVal(node => {
+            return (node.id === '^GSPC' || node.id === 'CNY=X') ? 30 : 10;
+        })
+        .nodeRelSize(4)
+        .linkLabel(link => `Correlación: ${link.correlation}`)
+        .linkWidth(link => Math.abs(link.correlation) * 8)
+        .linkColor(link => CORRELATION_COLOR_MAP(link.correlation))
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1);
+
+    Graph.cameraPosition({ z: 600 });
+    console.log("Nexus de Correlación 3D Renderizado con éxito.");
 }
+
 
 // =================================================================
 // 3. FUNCIÓN PARA ACTUALIZAR LOS ELEMENTOS DEL DASHBOARD
@@ -85,73 +102,81 @@ function renderizarNexus3D(data) {
 
 function actualizarDashboard(data) {
     // Panel Rojo: ALERTA CRÍTICA (Bloque de Contagio)
-    const alerta = document.getElementById('alerta-critica');
-    if (alerta) {
-        const riesgoMaximo = data.resumen_maximo;
-
-        alerta.innerHTML = `
-            <div class="header-alerta">ALERTA CRÍTICA: BLOQUE DE CONTAGIO</div>
-            <div class="riesgo-maximo">${riesgoMaximo}</div>
-            <p class="small-text">RIESGO MÁXIMO GLOBAL</p>
-            <p class="small-text">PARES AFECTADOS: ${riesgoMaximo.split(': ')[1]}</p>
-        `;
-        alerta.classList.remove('offline');
-        alerta.classList.add('online');
-    }
+    const alerta = document.getElementById('resumen-maximo-data'); // Apuntamos al ID de la cifra
+    const paresAfectados = document.getElementById('pares-afectados-data'); // Apuntamos al ID de los pares
 
     // Panel Amarillo: ACCIÓN BLINDAJE (Oportunidad de Cobertura)
-    const blindaje = document.getElementById('accion-blindaje');
-    if (blindaje) {
-        const correlacionMinima = data.correlacion_minima;
+    const blindaje = document.getElementById('correlacion-minima-data'); // Apuntamos al ID de la cifra
+    const paresCobertura = document.getElementById('pares-cobertura-data'); // Apuntamos al ID de los pares
 
-        blindaje.innerHTML = `
-            <div class="header-accion">ACCIÓN: BLINDAJE ESTRATÉGICO</div>
-            <div class="oportunidad-cobertura">${correlacionMinima}</div>
-            <p class="small-text">OPORTUNIDAD DE COBERTURA: ${correlacionMinima}</p>
-            <p class="small-text">ACTIVO REFUGIO: ORO (GC=F)</p>
-        `;
-        blindaje.classList.remove('offline');
-        blindaje.classList.add('online');
+    const fechaActualizacion = document.getElementById('fecha-actualizacion');
+    const ctaMini = document.querySelector('.cta-mini');
+
+    // --- 1. PARSEO Y EXTRACCIÓN DE CIFRAS ---
+    // Extrae la cifra y los pares para la Alerta Crítica
+    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
+    const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
+    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
+
+    // Extrae la cifra y los pares para la Acción Blindaje
+    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
+    const minCifra = minMatch ? minMatch[1] : 'N/A';
+    const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(`(${minCifra})`, '').trim();
+
+    // --- 2. INYECCIÓN DE DATOS Y RESOLUCIÓN DEL ESTADO "CARGANDO..." ---
+
+    if (alerta) alerta.textContent = maxCifra;
+    if (paresAfectados) paresAfectados.textContent = maxPares;
+
+    if (blindaje) blindaje.textContent = minCifra;
+    if (paresCobertura) paresCobertura.textContent = minPares;
+
+    // Actualiza el texto de la alerta CTA
+    if (ctaMini) {
+        ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
     }
+
+    // Actualiza la fecha de auditoría
+    if (fechaActualizacion) {
+        fechaActualizacion.textContent = data.ultima_actualizacion;
+    }
+
+    // Si la conexión es exitosa, llama al renderizado 3D
+    if (data.nexus_nodes && data.nexus_links) {
+        drawNexus(data.nexus_nodes, data.nexus_links);
+    }
+
+    console.log("✅ Dashboard actualizado y Nexus 3D inicializado.");
 }
+
 
 // =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
+const JSON_URL = 'data.json';
 
-function fetchData() {
-    fetch('data.json')
+function loadAnalysis() {
+    fetch(JSON_URL)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Fallo de conexión a la matriz: HTTP ' + response.status);
+                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
             }
             return response.json();
         })
         .then(data => {
-            console.log("Datos de la Matriz cargados:", data);
-
-            // 💡 1. Actualiza el Dashboard con los datos (RIESGO y COBERTURA)
+            // Lógica de aplicación de datos
             actualizarDashboard(data);
-
-            // LLAMADA CRÍTICA AL RENDERIZADO 3D (Si hay datos):
-            if (data.nexus_nodes && data.nexus_links) {
-                 renderizarNexus3D(data); // Pasamos todo el objeto data
-            }
-
-            // 💡 2. Finaliza el estado 'OFFLINE' con la hora de actualización
-            const estadoCarga = document.getElementById('estado-carga-alerta');
-            if (estadoCarga) {
-                estadoCarga.innerText = `ACTIVO Y ESTABLE. Última actualización: ${data.ultima_actualizacion}`;
-                estadoCarga.classList.remove('offline');
-                estadoCarga.classList.add('online');
-            }
         })
         .catch(error => {
-            console.error("Error al cargar data.json:", error);
-            const estadoCarga = document.getElementById('estado-carga-alerta');
-            if (estadoCarga) {
-                estadoCarga.innerText = "⚠️ SIN CONEXIÓN A LA MATRIZ. Revise el data.json.";
-            }
+            console.error('❌ Error al cargar o procesar datos JSON:', error);
+            // Failsafe (lo que ves ahora)
+            document.getElementById('resumen-maximo-data').textContent = 'OFFLINE';
+            document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('correlacion-minima-data').textContent = 'OFFLINE';
+            document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
+            const ctaMini = document.querySelector('.cta-mini');
+            if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ.`; }
         });
 }
 
@@ -160,5 +185,5 @@ function fetchData() {
 // 4. INICIO DEL PROCESO (Llamada limpia)
 // =================================================================
 
-// Ejecutar la conexión cuando la página haya terminado de cargar todos sus elementos
-document.addEventListener('DOMContentLoaded', fetchData);
+// Esta es la única línea que tu index.html necesita para arrancar todo
+document.addEventListener('DOMContentLoaded', loadAnalysis);
