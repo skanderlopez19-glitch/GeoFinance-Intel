@@ -1,33 +1,40 @@
 // =================================================================
-// 1. WEB COMPONENTS (HEADER Y FOOTER)
+// 1. DEFINICIÓN DE COMPONENTES WEB
 // =================================================================
+
+// ----------------------------------------------------
+// a. Main Header Component
+// ----------------------------------------------------
 
 class Header extends HTMLElement {
     constructor() {
         super();
     }
 
-// En la clase Header: RUTAS PLANAS CORREGIDAS
-connectedCallback() {
-    this.innerHTML = `
+    connectedCallback() {
+        // Asumiendo que las imágenes se movieron a una carpeta 'images' en la raíz.
+        this.innerHTML = `
         <header>
             <div class="logo">
                 <img src="/GeoFinance-Intel/images/logo-geofinance.png" alt="GeoFinance Intel Logo">
                 <h1>GEOFINANCE INTEL</h1>
             </div>
             <nav>
-    <a href="/GeoFinance-Intel/">Inicio</a>
-
-    <a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría</a>
-    <a href="/GeoFinance-Intel/analisis-frente-este.html">Crisis</a>
-    <a href="/GeoFinance-Intel/analisis-rol-china.html">Análisis</a>
-    <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
-</nav>
+                <a href="/GeoFinance-Intel/index.html">Inicio</a>
+                <a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría</a>
+                <a href="/GeoFinance-Intel/analisis-frente-este.html">Crisis</a>
+                <a href="/GeoFinance-Intel/analisis-rol-china.html">Análisis</a>
+                <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
+            </nav>
         </header>
-    `;
+        `;
+    }
 }
-
 customElements.define('main-header', Header);
+
+// ----------------------------------------------------
+// b. Main Footer Component
+// ----------------------------------------------------
 
 class Footer extends HTMLElement {
     constructor() {
@@ -36,190 +43,142 @@ class Footer extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <footer>
-                <div class="footer-content">
-                    <p>&copy; 2025 GeoFinance Intel. Análisis Automatizado.</p>
-                    <div class="social-links">
-                        <a href="https://linkedin.com/in/skanderlopez19" target="_blank">LinkedIn</a> |
-                        <a href="mailto:skanderlopez19@gmail.com">Contacto</a>
-                    </div>
+        <footer>
+            <div class="footer-grid">
+                <div>
+                    <h3>GeoFinance Intel</h3>
+                    <p>Inteligencia Geo-Financiera Cuantificada.</p>
+                    <p>&copy; ${new Date().getFullYear()} Todos los derechos reservados.</p>
                 </div>
-            </footer>
+                <div>
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="/GeoFinance-Intel/index.html">Inicio</a></li>
+                        <li><a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría del Poder</a></li>
+                        <li><a href="/GeoFinance-Intel/analisis-frente-este.html">Sala de Crisis</a></li>
+                        <li><a href="#suscribir">Suscribirse</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contacto</h3>
+                    <p>skanderlopez19@gmail.com</p>
+                    <p>Política de Privacidad</p>
+                </div>
+            </div>
+        </footer>
         `;
     }
 }
-
 customElements.define('main-footer', Footer);
 
 
 // =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
-// RUTA ABSOLUTA FINAL
+
+// SOLUCION FINAL: Se usa la ruta absoluta que apunta al archivo en la raíz del repositorio.
 const JSON_URL = '/GeoFinance-Intel/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
         .then(response => {
             if (!response.ok) {
-                // Si el error no es 404, puede ser un JSON inválido (status 200 pero parseo falla)
-                // Se agregó la regeneración de data.json para mitigar esto.
-                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json en la ruta: ${JSON_URL}`);
+                // Si el fetch falla (404, 500, etc.), muestra el error de conexión
+                throw new Error('FALLO DE CONEXIÓN HTTP a data.json: ' + response.status);
             }
             return response.json();
         })
         .then(data => {
-            // Lógica de aplicación de datos
-            actualizarDashboard(data);
-            // Llamada para generar los artículos
-            generarArticulos(data.top_dependencias);
+            // Verifica que el JSON tenga los datos esperados
+            if (!data || !data.maximo_contagio || !data.minimo_contagio) {
+                throw new Error('El archivo JSON está vacío o tiene un formato inválido.');
+            }
+
+            // 1. Actualizar el panel de alerta crítica (Máximo Contagio)
+            document.getElementById('resumen-maximo-data').textContent = data.maximo_contagio.valor;
+            document.getElementById('pares-afectados-data').textContent = data.maximo_contagio.pares;
+
+            // 2. Actualizar el panel de blindaje (Mínimo Contagio / Cobertura)
+            document.getElementById('correlacion-minima-data').textContent = data.minimo_contagio.pares_cobertura;
+            document.getElementById('pares-cobertura-data').textContent = `Correlación: ${data.minimo_contagio.valor_correlacion}`;
+
+            // 3. Actualizar fecha de actualización
+            document.getElementById('fecha-actualizacion').textContent = `Última Actualización: ${data.fecha_actualizacion}`;
+
+            // 4. Renderizar el gráfico 3D Force-Graph (NEXUS)
+            renderNexusGraph(data.nexus_data);
+
+            console.log("Dashboard cargado exitosamente.");
+
         })
         .catch(error => {
-            console.error('❌ Error al cargar o procesar datos JSON:', error);
-            // Failsafe para mostrar el error en el Dashboard
+            console.error("CRITICAL ERROR: Fallo en la carga del dashboard:", error);
+            // Mostrar mensaje de OFFLINE en caso de fallo
             document.getElementById('resumen-maximo-data').textContent = 'OFFLINE';
             document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
             document.getElementById('correlacion-minima-data').textContent = 'OFFLINE';
             document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
             document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
-            const ctaMini = document.querySelector('.cta-mini');
-            if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Revise consola (F12).`; }
+
+            // Agregar alerta visible en la página
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = "margin: 20px auto; padding: 15px; background-color: #ffc107; color: #333; font-weight: bold; text-align: center; border-radius: 4px; max-width: 800px;";
+            alertDiv.innerHTML = '⚠️ SIN CONEXIÓN A LA MATRIZ. Revise consola (F12).';
+            document.querySelector('#analisis').prepend(alertDiv);
         });
 }
 
 // =================================================================
-// 3. FUNCIÓN PARA ACTUALIZAR LOS ELEMENTOS DEL DASHBOARD
+// 3. FUNCIÓN DE RENDERIZADO DEL GRÁFICO 3D (Nexus)
 // =================================================================
 
-function actualizarDashboard(data) {
-    // Panel Rojo: ALERTA CRÍTICA (Bloque de Contagio)
-    const alerta = document.getElementById('resumen-maximo-data');
-    const paresAfectados = document.getElementById('pares-afectados-data');
+function renderNexusGraph(graphData) {
+    const elem = document.getElementById('nexus-target');
+    const ForceGraph3D = window.ForceGraph3D;
 
-    // Panel Amarillo: ACCIÓN BLINDAJE (Oportunidad de Cobertura)
-    const blindaje = document.getElementById('correlacion-minima-data');
-    const paresCobertura = document.getElementById('pares-cobertura-data');
-
-    const fechaActualizacion = document.getElementById('fecha-actualizacion');
-    const ctaMini = document.querySelector('.cta-mini');
-
-    // --- 1. PARSEO Y EXTRACCIÓN DE CIFRAS ---
-    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
-    const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
-    // Se quita la cifra del texto para inyectar solo los pares
-    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
-
-    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
-    const minCifra = minMatch ? minMatch[1] : 'N/A';
-    // Se quita la cifra del texto para inyectar solo los pares
-    const minPares = data.correlacion_minima.replace(`(${minCifra})`, '').trim();
-
-    // --- 2. INYECCIÓN DE DATOS ---
-    if (alerta) alerta.textContent = maxCifra;
-    if (paresAfectados) paresAfectados.textContent = maxPares;
-
-    if (blindaje) blindaje.textContent = minCifra;
-    if (paresCobertura) paresCobertura.textContent = minPares;
-
-    if (ctaMini) {
-        ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${maxPares} (${maxCifra}) | Última Actualización: ${data.ultima_actualizacion}`;
-    }
-
-    if (fechaActualizacion) {
-        fechaActualizacion.textContent = data.ultima_actualizacion;
-    }
-
-    // Si la conexión es exitosa, llama al renderizado 3D
-    if (data.nexus_nodes && data.nexus_links) {
-        drawNexus(data.nexus_nodes, data.nexus_links);
-    }
-
-    console.log("✅ Dashboard actualizado y Nexus 3D inicializado.");
-}
-
-
-// =================================================================
-// 4. FUNCIÓN PARA CREAR Y MOSTRAR ARTÍCULOS (CONTENIDO FALTANTE)
-// =================================================================
-
-function generarArticulos(topDependencias) {
-    const container = document.querySelector('.analysis-container');
-    if (!container) return;
-
-    // Limpia el contenido antes de añadir (por si acaso)
-    container.innerHTML = '';
-
-    // Usaremos los 4 principales riesgos (top_dependencias) como "Artículos"
-    topDependencias.forEach(item => {
-        // Estructura de tarjeta basada en tu HTML y CSS (asumiendo estilos oscuros)
-        const articleHTML = `
-            <div class="analysis-card"
-                 style="width: 250px; margin-bottom: 20px; padding: 25px; background: #1a1a1a; border-radius: 8px; border-left: 5px solid var(--color-alert-danger, #d81e1e);">
-                <h3 style="color: #FFC300; margin-bottom: 10px; font-size: 1.1em;">ACTIVO EN RIESGO</h3>
-                <p style="font-size: 1.6em; font-weight: 700; color: #fff; margin-bottom: 5px;">${item.nombre}</p>
-                <p style="color: #f00; font-size: 1em;">IRDC (Índice de Riesgo): ${item.puntuacion_irdc}</p>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', articleHTML);
-    });
-    console.log("✅ Artículos de Fundamentos cargados.");
-}
-
-
-// =================================================================
-// 5. MÓDULO DE RENDERING 3D (DE VUELTA EN EL ARCHIVO DE LÓGICA)
-// =================================================================
-
-function drawNexus(nodes, links) {
-    const container = document.getElementById('nexus-target');
-    if (!container) {
-        console.warn("Contenedor 'nexus-target' no encontrado. Gráfico 3D no renderizado.");
-        return;
-    }
-    // Aseguramos que ForceGraph esté disponible
-    if (typeof ForceGraph === 'undefined') {
-        console.error("Librería ForceGraph no cargada. No se puede renderizar el Nexus.");
+    // Si la función ForceGraph3D no se cargó, salimos
+    if (typeof ForceGraph3D !== 'function') {
+        console.error("ForceGraph3D no cargó correctamente.");
+        elem.innerHTML = '<p style="text-align: center; color: #888; padding-top: 200px;">Error al cargar visualización 3D.</p>';
         return;
     }
 
-    // Mapeo de color para las líneas de correlación
-    const CORRELATION_COLOR_MAP = (corr) => {
-        if (corr >= 0.4) return 'rgba(216, 30, 30, 0.9)'; // Alta correlación (Rojo, Peligro)
-        if (corr <= -0.15) return 'rgba(30, 255, 255, 0.9)'; // Baja/Negativa (Cyan, Cobertura)
-        return 'rgba(255, 255, 255, 0.3)'; // Baja (Blanco/Gris)
-    };
-
-    // Convertimos el campo 'correlation' a un valor de tamaño para el enlace
-    const graphLinks = links.map(link => ({
-        ...link,
-        value: Math.abs(link.correlation) * 10 // Multiplicar para hacerlo visible
-    }));
-
-
-    const Graph = ForceGraph()(container)
-        .graphData({ nodes: nodes, links: graphLinks })
-        .nodeId('id')
-        .nodeLabel('name')
-        .nodeAutoColorBy('name')
-        .nodeVal(node => {
-            // Hacemos que los nodos importantes (S&P 500, China) sean más grandes
-            return (node.id === '^GSPC' || node.id === 'CNY=X') ? 30 : 10;
-        })
-        .nodeRelSize(4)
-        .linkLabel(link => `Correlación: ${link.correlation}`)
-        .linkWidth(link => Math.abs(link.correlation) * 8)
-        .linkColor(link => CORRELATION_COLOR_MAP(link.correlation))
+    ForceGraph3D()(elem)
+        .graphData(graphData)
+        .nodeLabel('id')
+        .nodeAutoColorBy('group')
+        .linkWidth(link => link.value * 5)
+        .linkOpacity(0.5)
         .linkDirectionalArrowLength(3.5)
-        .linkDirectionalArrowRelPos(1);
-
-    Graph.cameraPosition({ z: 600 });
-    console.log("Nexus de Correlación 3D Renderizado con éxito.");
+        .linkDirectionalArrowRelPos(1)
+        .linkCurvature(0.25)
+        .linkAutoColorBy(link => link.value) // Colorear por valor de correlación
+        .backgroundColor('#0d0d0d'); // Fondo oscuro
 }
 
 
 // =================================================================
-// 6. INICIO DEL PROCESO (Llamada limpia)
+// 4. FUNCIÓN DE TOOLTIPS (Opcional)
 // =================================================================
 
-// Esta es la única línea que tu index.html necesita para arrancar todo
-document.addEventListener('DOMContentLoaded', loadAnalysis);
+function setupTooltips() {
+    const tooltip = document.getElementById('info-tooltip');
+    document.querySelectorAll('.tooltip-trigger').forEach(trigger => {
+        trigger.addEventListener('mouseenter', function(e) {
+            const info = this.getAttribute('data-info');
+            tooltip.textContent = info;
+            tooltip.style.display = 'block';
+            tooltip.style.left = e.pageX + 15 + 'px';
+            tooltip.style.top = e.pageY + 15 + 'px';
+        });
+
+        trigger.addEventListener('mousemove', function(e) {
+            tooltip.style.left = e.pageX + 15 + 'px';
+            tooltip.style.top = e.pageY + 15 + 'px';
+        });
+
+        trigger.addEventListener('mouseleave', function() {
+            tooltip.style.display = 'none';
+        });
+    });
+}
