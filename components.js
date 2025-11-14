@@ -12,11 +12,11 @@ class Header extends HTMLElement {
     }
 
     connectedCallback() {
-        // Rutas corregidas para la estructura plana (images/ en la raíz)
+        // CORRECCIÓN FINAL DE RUTA DEL LOGO (Asumiendo que está en la raíz)
         this.innerHTML = `
         <header>
             <div class="logo">
-                <img src="/GeoFinance-Intel/images/logo-geofinance.png" alt="GeoFinance Intel Logo">
+                <img src="/GeoFinance-Intel/logo-geofinance.png" alt="GeoFinance Intel Logo">
                 <h1>GEOFINANCE INTEL</h1>
             </div>
             <nav>
@@ -73,7 +73,6 @@ customElements.define('main-footer', Footer);
 
 
 // =================================================================
-// =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
 
@@ -98,8 +97,9 @@ function loadAnalysis() {
 
             // 1. Actualizar el panel de alerta crítica (Máximo Contagio)
             // Extraer el valor de correlación (ej. 0.64) del string "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.64)"
-            const maximoMatch = data.resumen_maximo.match(/\((\-?\d+\.\d+)\)/); // Busca el patrón de número entre paréntesis (incluye negativos)
+            const maximoMatch = data.resumen_maximo.match(/\((\-?\d+\.\d+)\)/); // Busca el patrón de número entre paréntesis
             const maximoValor = maximoMatch ? maximoMatch[1] : 'N/A'; // Captura solo el número
+            // Quita "Riesgo Máximo:" y el valor entre paréntesis para dejar solo los pares
             const paresAfectados = data.resumen_maximo.replace(maximoMatch ? maximoMatch[0] : '', '').replace('Riesgo Máximo:', '').trim();
 
             document.getElementById('resumen-maximo-data').textContent = maximoValor;
@@ -108,6 +108,7 @@ function loadAnalysis() {
             // 2. Actualizar el panel de blindaje (Mínimo Contagio / Cobertura)
             // Extraer el valor de correlación (ej. -0.13) del string "Chile (Peso) vs. Cobre Futuros (-0.13)"
             const minimoMatch = data.correlacion_minima.match(/\((\-?\d+\.\d+)\)/);
+            // Quita el valor entre paréntesis para dejar solo el par de cobertura
             const paresCobertura = data.correlacion_minima.replace(minimoMatch ? minimoMatch[0] : '', '').trim();
             const minimoValor = minimoMatch ? minimoMatch[1] : 'N/A';
 
@@ -145,27 +146,28 @@ function loadAnalysis() {
 }
 
 // =================================================================
-// 4. FUNCIÓN DE TOOLTIPS (Opcional)
+// 3. FUNCIÓN DE RENDERIZADO DEL GRÁFICO 3D (Nexus)
 // =================================================================
 
-function setupTooltips() {
-    const tooltip = document.getElementById('info-tooltip');
-    document.querySelectorAll('.tooltip-trigger').forEach(trigger => {
-        trigger.addEventListener('mouseenter', function(e) {
-            const info = this.getAttribute('data-info');
-            tooltip.textContent = info;
-            tooltip.style.display = 'block';
-            tooltip.style.left = e.pageX + 15 + 'px';
-            tooltip.style.top = e.pageY + 15 + 'px';
-        });
+function renderNexusGraph(graphData) {
+    const elem = document.getElementById('nexus-target');
+    const ForceGraph3D = window.ForceGraph3D;
 
-        trigger.addEventListener('mousemove', function(e) {
-            tooltip.style.left = e.pageX + 15 + 'px';
-            tooltip.style.top = e.pageY + 15 + 'px';
-        });
+    if (typeof ForceGraph3D !== 'function') {
+        console.error("ForceGraph3D no cargó correctamente.");
+        elem.innerHTML = '<p style="text-align: center; color: #888; padding-top: 200px;">Error al cargar visualización 3D.</p>';
+        return;
+    }
 
-        trigger.addEventListener('mouseleave', function() {
-            tooltip.style.display = 'none';
-        });
-    });
+    ForceGraph3D()(elem)
+        .graphData(graphData)
+        .nodeLabel('id')
+        .nodeAutoColorBy('group')
+        .linkWidth(link => Math.abs(link.value) * 5) // Usar el valor absoluto de correlación
+        .linkOpacity(0.5)
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1)
+        .linkCurvature(0.25)
+        .linkAutoColorBy(link => link.value)
+        .backgroundColor('#0d0d0d');
 }

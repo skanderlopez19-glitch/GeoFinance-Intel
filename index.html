@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inteligencia Geo-Financiera Cuantificada | Análisis LATAM</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/GeoFinance-Intel/logo-geofinance.png" type="image/png">
 </head>
 <body>
 
@@ -20,8 +21,7 @@
                 width="100%"
                 controls
                 autoplay  muted     loop
-                poster="/GeoFinance-Intel/images/portada_video.jpg"
-                style="border-radius: 12px; box-shadow: 0 0 30px rgba(255, 195, 0, 0.2);">
+               style="border-radius: 12px; box-shadow: 0 0 30px rgba(255, 195, 0, 0.2);">
 
                 <source src="promo_geofinance.mp4" type="video/mp4">
 
@@ -141,8 +141,6 @@
             // Aseguramos que la lógica de carga esté definida en components.js
             if (typeof loadAnalysis === 'function') {
                 loadAnalysis();
-                // Si tienes una función setupTooltips(), llámala aquí
-                // setupTooltips();
             } else {
                 console.error("CRITICAL ERROR: La función loadAnalysis no se definió en components.js.");
             }
