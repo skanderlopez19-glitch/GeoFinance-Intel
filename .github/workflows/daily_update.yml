@@ -10,40 +10,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Nivel 1: job
   build:
     runs-on: ubuntu-latest
-steps:
-  - name: ⬇️ Checkout del Repositorio
-    uses: actions/checkout@v4
 
-  - name: 🐍 Configurar Python 3.10
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.10'
+    # Nivel 2: steps (Debe estar sangrado un nivel más que 'build' y al mismo nivel que 'runs-on')
+    steps:
+      # Nivel 3: name / uses / run (Comienzan con un guión y están al mismo nivel de sangría)
+      - name: ⬇️ Checkout del Repositorio
+        uses: actions/checkout@v4
 
-  - name: 📦 Instalar Dependencias
-    run: |
-      python -m pip install --upgrade pip
-      # Aseguramos que reportlab y todas las demás dependencias estén instaladas
-      pip install pandas yfinance matplotlib seaborn reportlab
+      - name: 🐍 Configurar Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-  - name: 📈 Ejecutar el Script Python (MAP.PY)
-    run: |
-      # El script ejecutará y generará data.json y informe_diario.pdf
-      python MAP.PY
-    env:
-      # Pasar los secretos como variables de entorno al script
-      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-      RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+      - name: 📦 Instalar Dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas yfinance matplotlib seaborn reportlab
+
+      # Solución para gráficos (xvfb)
+      - name: 💻 Instalar Entorno Gráfico Virtual (Xvfb)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - name: 📈 Ejecutar el Script Python (MAP.PY) en Modo Headless
+        run: |
+          xvfb-run --auto-servernum python MAP.PY
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
 
 
-  - name: 💾 Subir Archivos Generados (data.json y PDF)
-    uses: stefanzweifel/git-auto-commit-action@v5
-    with:
-      # Archivos que se actualizarán en el repositorio
-      file_pattern: 'data.json informe_diario.pdf'
-      commit_message: '🤖 BOT: Datos geo-financieros y PDF actualizados automáticamente'
-      # Necesario para el push
-      commit_user_name: 'github-actions[bot]'
-      commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: 💾 Subir Archivos Generados (data.json y PDF)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Nivel 4: with (Sangrado un nivel más que 'uses')
+          file_pattern: 'data.json informe_diario.pdf'
+          commit_message: '🤖 BOT: Datos geo-financieros y PDF actualizados automáticamente'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'

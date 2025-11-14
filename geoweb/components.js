@@ -52,12 +52,122 @@ customElements.define('main-footer', Footer);
 
 
 // =================================================================
-// 5. MÓDULO DE RENDERING 3D (DE VUELTA EN EL ARCHIVO DE LÓGICA)
+// 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
+// =================================================================
+// 💡 SOLUCIÓN 1: La ruta se corrige para buscar data.json en la raíz (subiendo un nivel)
+const JSON_URL = '../data.json';
+
+function loadAnalysis() {
+    fetch(JSON_URL)
+        .then(response => {
+            if (!response.ok) {
+                // Generará un error si es 404 (Not Found) o 400 (Bad Request)
+                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json en la ruta: ${JSON_URL}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Lógica de aplicación de datos
+            actualizarDashboard(data);
+            // 💡 SOLUCIÓN 3: Llamada para generar los artículos
+            generarArticulos(data.top_dependencias);
+        })
+        .catch(error => {
+            console.error('❌ Error al cargar o procesar datos JSON:', error);
+            // Failsafe para mostrar el error en el Dashboard
+            document.getElementById('resumen-maximo-data').textContent = 'OFFLINE';
+            document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('correlacion-minima-data').textContent = 'OFFLINE';
+            document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
+            document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
+            const ctaMini = document.querySelector('.cta-mini');
+            if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Revise consola (F12).`; }
+        });
+}
+
+
+// =================================================================
+// 3. FUNCIÓN PARA ACTUALIZAR LOS ELEMENTOS DEL DASHBOARD
 // =================================================================
 
-// NOTA: Esta función se define sin llamar a ForceGraph3D directamente,
-// ya que ForceGraph debe ser llamado con ForceGraph()() si no está en un namespace global.
-// Asumiremos que el script de ForceGraph está cargado en el index.html.
+function actualizarDashboard(data) {
+    // Panel Rojo: ALERTA CRÍTICA (Bloque de Contagio)
+    const alerta = document.getElementById('resumen-maximo-data');
+    const paresAfectados = document.getElementById('pares-afectados-data');
+
+    // Panel Amarillo: ACCIÓN BLINDAJE (Oportunidad de Cobertura)
+    const blindaje = document.getElementById('correlacion-minima-data');
+    const paresCobertura = document.getElementById('pares-cobertura-data');
+
+    const fechaActualizacion = document.getElementById('fecha-actualizacion');
+    const ctaMini = document.querySelector('.cta-mini');
+
+    // --- 1. PARSEO Y EXTRACCIÓN DE CIFRAS ---
+    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
+    const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
+    // Se quita la cifra del texto para inyectar solo los pares
+    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
+
+    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
+    const minCifra = minMatch ? minMatch[1] : 'N/A';
+    // Se quita la cifra del texto para inyectar solo los pares
+    const minPares = data.correlacion_minima.replace(`(${minCifra})`, '').trim();
+
+    // --- 2. INYECCIÓN DE DATOS ---
+    if (alerta) alerta.textContent = maxCifra;
+    if (paresAfectados) paresAfectados.textContent = maxPares;
+
+    if (blindaje) blindaje.textContent = minCifra;
+    if (paresCobertura) paresCobertura.textContent = minPares;
+
+    if (ctaMini) {
+        ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${maxPares} (${maxCifra}) | Última Actualización: ${data.ultima_actualizacion}`;
+    }
+
+    if (fechaActualizacion) {
+        fechaActualizacion.textContent = data.ultima_actualizacion;
+    }
+
+    // Si la conexión es exitosa, llama al renderizado 3D
+    if (data.nexus_nodes && data.nexus_links) {
+        drawNexus(data.nexus_nodes, data.nexus_links);
+    }
+
+    console.log("✅ Dashboard actualizado y Nexus 3D inicializado.");
+}
+
+
+// =================================================================
+// 4. FUNCIÓN PARA CREAR Y MOSTRAR ARTÍCULOS (CONTENIDO FALTANTE)
+// =================================================================
+
+function generarArticulos(topDependencias) {
+    const container = document.querySelector('.analysis-container');
+    if (!container) return;
+
+    // Limpia el contenido antes de añadir (por si acaso)
+    container.innerHTML = '';
+
+    // Usaremos los 4 principales riesgos (top_dependencias) como "Artículos"
+    topDependencias.forEach(item => {
+        // Estructura de tarjeta basada en tu HTML y CSS (asumiendo estilos oscuros)
+        const articleHTML = `
+            <div class="analysis-card"
+                 style="width: 250px; margin-bottom: 20px; padding: 25px; background: #1a1a1a; border-radius: 8px; border-left: 5px solid var(--color-alert-danger, #d81e1e);">
+                <h3 style="color: #FFC300; margin-bottom: 10px; font-size: 1.1em;">ACTIVO EN RIESGO</h3>
+                <p style="font-size: 1.6em; font-weight: 700; color: #fff; margin-bottom: 5px;">${item.nombre}</p>
+                <p style="color: #f00; font-size: 1em;">IRDC (Índice de Riesgo): ${item.puntuacion_irdc}</p>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', articleHTML);
+    });
+    console.log("✅ Artículos de Fundamentos cargados.");
+}
+
+
+// =================================================================
+// 5. MÓDULO DE RENDERING 3D (DE VUELTA EN EL ARCHIVO DE LÓGICA)
+// =================================================================
 
 function drawNexus(nodes, links) {
     const container = document.getElementById('nexus-target');
@@ -65,23 +175,33 @@ function drawNexus(nodes, links) {
         console.warn("Contenedor 'nexus-target' no encontrado. Gráfico 3D no renderizado.");
         return;
     }
+    // Aseguramos que ForceGraph esté disponible
     if (typeof ForceGraph === 'undefined') {
         console.error("Librería ForceGraph no cargada. No se puede renderizar el Nexus.");
         return;
     }
 
+    // Mapeo de color para las líneas de correlación
     const CORRELATION_COLOR_MAP = (corr) => {
-        if (corr >= 0.4) return 'rgba(255, 30, 30, 0.9)';
-        if (corr <= -0.15) return 'rgba(30, 255, 255, 0.9)';
-        return 'rgba(255, 255, 255, 0.3)';
+        if (corr >= 0.4) return 'rgba(216, 30, 30, 0.9)'; // Alta correlación (Rojo, Peligro)
+        if (corr <= -0.15) return 'rgba(30, 255, 255, 0.9)'; // Baja/Negativa (Cyan, Cobertura)
+        return 'rgba(255, 255, 255, 0.3)'; // Baja (Blanco/Gris)
     };
 
+    // Convertimos el campo 'correlation' a un valor de tamaño para el enlace
+    const graphLinks = links.map(link => ({
+        ...link,
+        value: Math.abs(link.correlation) * 10 // Multiplicar para hacerlo visible
+    }));
+
+
     const Graph = ForceGraph()(container)
-        .graphData({ nodes: nodes, links: links })
+        .graphData({ nodes: nodes, links: graphLinks })
         .nodeId('id')
         .nodeLabel('name')
         .nodeAutoColorBy('name')
         .nodeVal(node => {
+            // Hacemos que los nodos importantes (S&P 500, China) sean más grandes
             return (node.id === '^GSPC' || node.id === 'CNY=X') ? 30 : 10;
         })
         .nodeRelSize(4)
@@ -97,92 +217,7 @@ function drawNexus(nodes, links) {
 
 
 // =================================================================
-// 3. FUNCIÓN PARA ACTUALIZAR LOS ELEMENTOS DEL DASHBOARD
-// =================================================================
-
-function actualizarDashboard(data) {
-    // Panel Rojo: ALERTA CRÍTICA (Bloque de Contagio)
-    const alerta = document.getElementById('resumen-maximo-data'); // Apuntamos al ID de la cifra
-    const paresAfectados = document.getElementById('pares-afectados-data'); // Apuntamos al ID de los pares
-
-    // Panel Amarillo: ACCIÓN BLINDAJE (Oportunidad de Cobertura)
-    const blindaje = document.getElementById('correlacion-minima-data'); // Apuntamos al ID de la cifra
-    const paresCobertura = document.getElementById('pares-cobertura-data'); // Apuntamos al ID de los pares
-
-    const fechaActualizacion = document.getElementById('fecha-actualizacion');
-    const ctaMini = document.querySelector('.cta-mini');
-
-    // --- 1. PARSEO Y EXTRACCIÓN DE CIFRAS ---
-    // Extrae la cifra y los pares para la Alerta Crítica
-    const maxMatch = data.resumen_maximo.match(/\((.*?)\)/);
-    const maxCifra = maxMatch ? maxMatch[1] : 'N/A';
-    const maxPares = data.resumen_maximo.replace('Riesgo Máximo: ', '').replace(`(${maxCifra})`, '').trim();
-
-    // Extrae la cifra y los pares para la Acción Blindaje
-    const minMatch = data.correlacion_minima.match(/\((.*?)\)/);
-    const minCifra = minMatch ? minMatch[1] : 'N/A';
-    const minPares = data.correlacion_minima.replace(' vs. ', ' vs. ').replace(`(${minCifra})`, '').trim();
-
-    // --- 2. INYECCIÓN DE DATOS Y RESOLUCIÓN DEL ESTADO "CARGANDO..." ---
-
-    if (alerta) alerta.textContent = maxCifra;
-    if (paresAfectados) paresAfectados.textContent = maxPares;
-
-    if (blindaje) blindaje.textContent = minCifra;
-    if (paresCobertura) paresCobertura.textContent = minPares;
-
-    // Actualiza el texto de la alerta CTA
-    if (ctaMini) {
-        ctaMini.innerHTML = `🔥 **ALERTA HOY:** ${data.resumen_maximo} | Última Actualización: ${data.ultima_actualizacion}`;
-    }
-
-    // Actualiza la fecha de auditoría
-    if (fechaActualizacion) {
-        fechaActualizacion.textContent = data.ultima_actualizacion;
-    }
-
-    // Si la conexión es exitosa, llama al renderizado 3D
-    if (data.nexus_nodes && data.nexus_links) {
-        drawNexus(data.nexus_nodes, data.nexus_links);
-    }
-
-    console.log("✅ Dashboard actualizado y Nexus 3D inicializado.");
-}
-
-
-// =================================================================
-// 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
-// =================================================================
-const JSON_URL = 'data.json';
-
-function loadAnalysis() {
-    fetch(JSON_URL)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status} - No se encontró data.json`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Lógica de aplicación de datos
-            actualizarDashboard(data);
-        })
-        .catch(error => {
-            console.error('❌ Error al cargar o procesar datos JSON:', error);
-            // Failsafe (lo que ves ahora)
-            document.getElementById('resumen-maximo-data').textContent = 'OFFLINE';
-            document.getElementById('pares-afectados-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
-            document.getElementById('correlacion-minima-data').textContent = 'OFFLINE';
-            document.getElementById('pares-cobertura-data').textContent = 'FALLO DE CONEXIÓN A LA MATRIZ';
-            document.getElementById('fecha-actualizacion').textContent = 'ERROR DE CARGA';
-            const ctaMini = document.querySelector('.cta-mini');
-            if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ.`; }
-        });
-}
-
-
-// =================================================================
-// 4. INICIO DEL PROCESO (Llamada limpia)
+// 6. INICIO DEL PROCESO (Llamada limpia)
 // =================================================================
 
 // Esta es la única línea que tu index.html necesita para arrancar todo

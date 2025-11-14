@@ -2,13 +2,13 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 import seaborn as sns
-from datetime import datetime
+from datetime import datetime, timedelta
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
+from email.mime.base import MIMEBase  # Clase MIMEBase para adjuntos
 from email import encoders
-import os
+import os # Importamos 'os' para leer variables de entorno
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
@@ -19,11 +19,13 @@ import json
 
 # =================================================================
 # CONFIGURACIÓN GLOBAL (VARIABLES CRUCIALES)
+# 💡 CORRECCIÓN TAREA 3: Leemos las credenciales desde variables de entorno
 # =================================================================
-# ATENCIÓN: Las credenciales y correos se mantienen como las proporcionó el usuario.
-sender_email = "skanderlopez19@gmail.com"
-password = "unbujapaltomprjp"
-receiver_email = "skanderlopez19@gmail.com"
+# Leemos las credenciales desde variables de entorno para seguridad (GitHub Secrets)
+# Si no las encuentra (ej. ejecución local), usa los valores por defecto
+sender_email = os.getenv("SENDER_EMAIL", "skanderlopez19@gmail.com")
+password = os.getenv("EMAIL_PASSWORD", "unbujapaltomprjp")
+receiver_email = os.getenv("RECEIVER_EMAIL", "skanderlopez19@gmail.com")
 
 # NUEVOS TICKERS: USDPEN=X (Perú), USDARS=X (Argentina) y CNY=X (China)
 TICKER_TO_NAME = {
@@ -42,8 +44,11 @@ tickers_geo_latam_completo = [
     '^GSPC', 'GC=F', 'USDMXN=X', 'USDBRL=X', 'USDCOP=X', 'USDCLP=X',
     'USDPEN=X', 'USDARS=X', 'CL=F', 'HG=F', 'CNY=X'
 ]
-fecha_inicio = '2020-01-01'
-fecha_fin = '2025-01-01'
+
+# 💡 CORRECCIÓN 1: FECHAS DINÁMICAS 💡
+# Descarga datos de UN AÑO hacia atrás para tener suficiente historial
+fecha_fin = datetime.now().strftime('%Y-%m-%d')
+fecha_inicio = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
 
 datos_historicos = yf.download(tickers_geo_latam_completo, start=fecha_inicio, end=fecha_fin)
 precios_cierre = datos_historicos['Close'].dropna()
@@ -101,7 +106,6 @@ indice_riesgo_dependencia = indice_riesgo_dependencia.drop(activos_riesgo, error
 
 # =================================================================
 # MODULO 2.7: CÁLCULO DEL HISTORIAL DE VOLATILIDAD (Para Gráfico Web)
-# ⚠️ AÑADIDO PARA RESOLVER EL NameError ⚠️
 # =================================================================
 
 def generar_historial_volatilidad(precios_cierre, indice_riesgo_dependencia, n_dias=7):
@@ -142,7 +146,7 @@ def generar_historial_volatilidad(precios_cierre, indice_riesgo_dependencia, n_d
     return historial
 
 
-# 3. LLAMADA CRÍTICA A LA FUNCIÓN (Resuelve el NameError)
+# 3. LLAMADA CRÍTICA A LA FUNCIÓN
 historial_volatilidad_web = generar_historial_volatilidad(precios_cierre, indice_riesgo_dependencia, n_dias=7)
 
 # =================================================================
@@ -207,14 +211,16 @@ print(f"\n✅ Datos de la Web exportados a {ruta_json_web}!")
 
 # =================================================================
 # MODULO 3: GENERACIÓN DEL INFORME PDF (ReportLab)
-# (El código del PDF es largo, pero no lo modificamos en esta sección)
 # =================================================================
-fecha_actual = datetime.now().strftime("%Y%m%d")
-nombre_archivo_pdf = f"INFORME_GEOPOLITICO_{fecha_actual}.pdf"
-buffer = io.BytesIO()
-doc = SimpleDocTemplate(buffer, pagesize=letter, title=nombre_archivo_pdf)
-styles = getSampleStyleSheet()
+# NOMBRE FIJO PARA LA WEB
+nombre_archivo_pdf_web = "informe_diario.pdf"
+# Nombre dinámico para el correo (por si se quiere adjuntar con la fecha)
+nombre_archivo_pdf_email = f"INFORME_GEOPOLITICO_{datetime.now().strftime('%Y%m%d')}.pdf"
 
+styles = getSampleStyleSheet()
+buffer = io.BytesIO()
+# Usamos un título genérico ya que el nombre del archivo es fijo para la web
+doc = SimpleDocTemplate(buffer, pagesize=letter, title="INFORME_GEOPOLITICO_LATAM")
 # Lista completa de países LATAM para el gráfico (6 países)
 latam_tickers = ['USDMXN=X', 'USDBRL=X', 'USDCOP=X', 'USDCLP=X', 'USDPEN=X', 'USDARS=X']
 latam_nombres = [TICKER_TO_NAME.get(t, t) for t in latam_tickers]
@@ -330,9 +336,16 @@ Story.append(Spacer(1, 0.2 * inch))
 
 doc.build(Story)
 buffer.seek(0)
+
+# 💡 CAMBIO CLAVE: Guardar el PDF con el nombre fijo para la web (informe_diario.pdf)
+with open(nombre_archivo_pdf_web, 'wb') as f:
+    f.write(buffer.getbuffer())
+
 os.remove(temp_png_rendimiento)
 os.remove(temp_png_mapa)
-print(f"\n¡PDF Generado Exitosamente: {nombre_archivo_pdf}!")
+print(f"\n¡PDF Generado Exitosamente y Guardado para la Web: {nombre_archivo_pdf_web}!")
+# =================================================================
+
 
 # =================================================================
 # MODULO 4: AUTOMATIZACIÓN DEL EMAIL (ENTREGA DE VALOR - INFORME ROBUSTO)
@@ -342,6 +355,7 @@ print(f"\n¡PDF Generado Exitosamente: {nombre_archivo_pdf}!")
 msg = MIMEMultipart()
 msg['From'] = sender_email
 msg['To'] = receiver_email
+# Usamos el nombre dinámico del archivo para el adjunto del email
 subject = f"INFORME PREMIUM (AMPLIADO): Análisis de Riesgo Geo-Financiero Cuantificado ({datetime.now().strftime('%d/%m/%Y')})"
 msg['Subject'] = subject
 
@@ -366,11 +380,15 @@ msg.attach(MIMEText(body, 'plain'))
 
 # --- ADJUNTAR EL PDF DESDE LA MEMORIA (BUFFER) ---
 if buffer:
-    print(f"Adjuntando el PDF: {nombre_archivo_pdf}")
+    # Volvemos a posicionar el puntero al inicio del buffer para leerlo
+    buffer.seek(0)
+    print(f"Adjuntando el PDF al correo con nombre: {nombre_archivo_pdf_email}")
+
     part = MIMEBase("application", "pdf")
-    part.set_payload(buffer.getvalue())
+    part.set_payload(buffer.read())  # Leer el contenido del buffer
     encoders.encode_base64(part)
-    part.add_header("Content-Disposition", f"attachment; filename= {nombre_archivo_pdf}")
+    # Usamos el nombre DINÁMICO para el adjunto del email
+    part.add_header("Content-Disposition", f"attachment; filename= {nombre_archivo_pdf_email}")
     msg.attach(part)
 else:
     print(f"Error: No se encontró el buffer PDF para adjuntar.")

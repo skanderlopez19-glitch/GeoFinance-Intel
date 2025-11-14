@@ -28,7 +28,7 @@
                 <p>Tu navegador no soporta el video.</p>
             </video>
         </div>
-        <a href="#suscribir" class="btn-hero">Reciba el Informe Diario</a>
+        <a href="informe_diario.pdf" class="btn-hero" download>Reciba el Informe Diario</a>
         <p class="cta-mini">Automatizado y de Nivel Ejecutivo | **Próximo Envío: Mañana, 19:00 (Hora Local)**</p>
     </section>
 
@@ -113,7 +113,7 @@
                 <p style="font-size: 1.1rem; color: #aaa; margin-bottom: 15px;">
                     EVIDENCIA CUANTIFICADA: MAPA DE CALOR Y VOLATILIDAD IRDC.
                 </p>
-                <a href="informe_geopolitico_latest.pdf" target="_blank" class="btn-cta" style="background-color: var(--color-accent-primary); color: var(--color-dark) !important; font-size: 1rem; padding: 12px 25px; text-transform: uppercase; font-weight: bold;">
+                <a href="informe_diario.pdf" download class="btn-cta" style="background-color: var(--color-accent-primary); color: var(--color-dark) !important; font-size: 1rem; padding: 12px 25px; text-transform: uppercase; font-weight: bold;">
                     DESCARGAR ARCHIVO TÁCTICO (PDF) »
                 </a>
             </div>
@@ -138,7 +138,7 @@
             // Aseguramos que la lógica de carga esté definida en components.js
             if (typeof loadAnalysis === 'function') {
                 loadAnalysis();
-                updateAIAuditDate();
+                // updateAIAuditDate(); (Esta funcion ya no es necesaria, la fecha se carga de data.json)
                 setupTooltips();
             } else {
                 console.error("CRITICAL ERROR: La función loadAnalysis no se definió en components.js.");
