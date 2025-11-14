@@ -52,10 +52,13 @@ customElements.define('main-footer', Footer);
 
 
 // =================================================================
+// =================================================================
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
-// 💡 SOLUCIÓN 1: La ruta se corrige para buscar data.json en la raíz (subiendo un nivel)
-const JSON_URL = '../data.json';
+// 💡 SOLUCIÓN FINAL: Se usa la ruta absoluta /data.json
+// Esto asegura que se busca desde la raíz del dominio de GitHub Pages,
+// resolviendo el fallo de conexión estática.
+const JSON_URL = '/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
@@ -69,7 +72,7 @@ function loadAnalysis() {
         .then(data => {
             // Lógica de aplicación de datos
             actualizarDashboard(data);
-            // 💡 SOLUCIÓN 3: Llamada para generar los artículos
+            // Llamada para generar los artículos
             generarArticulos(data.top_dependencias);
         })
         .catch(error => {
@@ -84,6 +87,7 @@ function loadAnalysis() {
             if (ctaMini) { ctaMini.innerHTML = `⚠️ SIN CONEXIÓN A LA MATRIZ. Revise consola (F12).`; }
         });
 }
+// ... (El resto del código JavaScript sigue igual)
 
 
 // =================================================================
