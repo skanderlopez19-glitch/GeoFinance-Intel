@@ -2,7 +2,10 @@
     "ultima_actualizacion": "14/11/2025 a las 07:22",
     "resumen_maximo": "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.64)",
     "top_dependencias": [
-        {
+        // ... (Todas las claves deben tener comillas dobles, incluyendo "nombre", "puntuacion_irdc", "fecha", "volatilidad", etc.)
+    ],
+    // ...
+}
             "nombre": "Oro (Refugio)",
             "puntuacion_irdc": "0.14"
         },
