@@ -7,23 +7,24 @@ class Header extends HTMLElement {
         super();
     }
 
-    connectedCallback() {
-        this.innerHTML = `
-            <header>
-                <div class="logo">
-                    <img src="images/logo-geofinance.png" alt="GeoFinance Intel Logo">
-                    <h1>GEOFINANCE INTEL</h1>
-                </div>
-                <nav>
-                    <a href="index.html">Inicio</a>
-                    <a href="analisis-metodologia-irdc.html">Teoría</a>
-                    <a href="frente-este-ensayo.html">Crisis</a>
-                    <a href="analisis-rol-china.html">Análisis</a>
-                    <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
-                </nav>
-            </header>
-        `;
-    }
+  // En la clase Header:
+// En la clase Header:
+connectedCallback() {
+    this.innerHTML = `
+        <header>
+            <div class="logo">
+                <img src="images/logo-geofinance.png" alt="GeoFinance Intel Logo">
+                <h1>GEOFINANCE INTEL</h1>
+            </div>
+            <nav>
+                <a href="/GeoFinance-Intel/index.html">Inicio</a>
+                <a href="/GeoFinance-Intel/analisis-metodologia-irdc.html">Teoría</a>
+                <a href="/GeoFinance-Intel/frente-este-ensayo.html">Crisis</a>
+                <a href="/GeoFinance-Intel/analisis-rol-china.html">Análisis</a>
+                <a href="#suscribir" class="btn-cta-nav">SUSCRIBIRSE</a>
+            </nav>
+        </header>
+    `;
 }
 
 customElements.define('main-header', Header);
@@ -58,7 +59,7 @@ customElements.define('main-footer', Footer);
 // 💡 SOLUCIÓN FINAL: Se usa la ruta absoluta /data.json
 // Esto asegura que se busca desde la raíz del dominio de GitHub Pages,
 // resolviendo el fallo de conexión estática.
-const JSON_URL = '/data.json';
+const JSON_URL = 'https://skanderlopez19-glitch.github.io/GeoFinance-Intel/data.json';
 
 function loadAnalysis() {
     fetch(JSON_URL)
