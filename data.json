@@ -1,176 +1,24 @@
 {
-    "ultima_actualizacion": "14/11/2025 a las 19:54",
-    "resumen_maximo": "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.64)",
-    "top_dependencias": [
-        {
-            "nombre": "Oro (Refugio)",
-            "puntuacion_irdc": "0.14"
-        },
-        {
-            "nombre": "Chile (Peso)",
-            "puntuacion_irdc": "0.08"
-        },
-        {
-            "nombre": "Colombia (Peso)",
-            "puntuacion_irdc": "0.08"
-        },
-        {
-            "nombre": "México (Peso)",
-            "puntuacion_irdc": "0.08"
-        }
-    ],
-    "correlacion_minima": "Chile (Peso) vs. Cobre Futuros (-0.13)",
-    "volatilidad_historica": [
-        {
-            "fecha": "05 Nov",
-            "volatilidad": 9.94
-        },
-        {
-            "fecha": "06 Nov",
-            "volatilidad": 4.54
-        },
-        {
-            "fecha": "07 Nov",
-            "volatilidad": 1.85
-        },
-        {
-            "fecha": "10 Nov",
-            "volatilidad": 6.07
-        },
-        {
-            "fecha": "11 Nov",
-            "volatilidad": 3.53
-        },
-        {
-            "fecha": "12 Nov",
-            "volatilidad": 3.37
-        },
-        {
-            "fecha": "13 Nov",
-            "volatilidad": 0.81
-        }
-    ],
-    "nexus_nodes": [
-        {
-            "id": "CL=F",
-            "name": "Petróleo WTI"
-        },
-        {
-            "id": "CNY=X",
-            "name": "China (Yuan)"
-        },
-        {
-            "id": "GC=F",
-            "name": "Oro (Refugio)"
-        },
-        {
-            "id": "HG=F",
-            "name": "Cobre Futuros"
-        },
-        {
-            "id": "USDARS=X",
-            "name": "Argentina (Peso)"
-        },
-        {
-            "id": "USDBRL=X",
-            "name": "Brasil (Real)"
-        },
-        {
-            "id": "USDCLP=X",
-            "name": "Chile (Peso)"
-        },
-        {
-            "id": "USDCOP=X",
-            "name": "Colombia (Peso)"
-        },
-        {
-            "id": "USDMXN=X",
-            "name": "México (Peso)"
-        },
-        {
-            "id": "USDPEN=X",
-            "name": "Perú (Sol)"
-        },
-        {
-            "id": "^GSPC",
-            "name": "EE. UU. (S&P 500)"
-        }
-    ],
-    "nexus_links": [
-        {
-            "source": "CL=F",
-            "target": "GC=F",
-            "correlation": 0.17
-        },
-        {
-            "source": "CL=F",
-            "target": "HG=F",
-            "correlation": 0.17
-        },
-        {
-            "source": "CL=F",
-            "target": "^GSPC",
-            "correlation": 0.23
-        },
-        {
-            "source": "CNY=X",
-            "target": "USDCLP=X",
-            "correlation": 0.17
-        },
-        {
-            "source": "CNY=X",
-            "target": "USDCOP=X",
-            "correlation": 0.21
-        },
-        {
-            "source": "GC=F",
-            "target": "HG=F",
-            "correlation": 0.29
-        },
-        {
-            "source": "HG=F",
-            "target": "^GSPC",
-            "correlation": 0.18
-        },
-        {
-            "source": "USDBRL=X",
-            "target": "USDCLP=X",
-            "correlation": 0.22
-        },
-        {
-            "source": "USDBRL=X",
-            "target": "USDCOP=X",
-            "correlation": 0.26
-        },
-        {
-            "source": "USDBRL=X",
-            "target": "USDMXN=X",
-            "correlation": 0.49
-        },
-        {
-            "source": "USDCLP=X",
-            "target": "USDCOP=X",
-            "correlation": 0.64
-        },
-        {
-            "source": "USDCLP=X",
-            "target": "USDMXN=X",
-            "correlation": 0.28
-        },
-        {
-            "source": "USDCLP=X",
-            "target": "USDPEN=X",
-            "correlation": 0.5
-        },
-        {
-            "source": "USDCOP=X",
-            "target": "USDMXN=X",
-            "correlation": 0.31
-        },
-        {
-            "source": "USDCOP=X",
-            "target": "USDPEN=X",
-            "correlation": 0.32
-        }
-    ]
+    "maximo_contagio": {
+        "valor": "99%",
+        "pares": "MXN - BRL (Correlación 0.98)"
+    },
+    "minimo_contagio": {
+        "valor_correlacion": "0.01",
+        "pares_cobertura": "ARGENTINA (M.A.)"
+    },
+    "fecha_actualizacion": "14 Nov 2025 (10:00 UTC)",
+    "nexus_data": {
+        "nodes": [
+            {"id": "USD", "group": 1},
+            {"id": "MXN", "group": 2},
+            {"id": "BRL", "group": 2},
+            {"id": "ARS", "group": 3}
+        ],
+        "links": [
+            {"source": "USD", "target": "MXN", "value": 0.5},
+            {"source": "MXN", "target": "BRL", "value": 0.98},
+            {"source": "USD", "target": "ARS", "value": 0.1}
+        ]
+    }
 }

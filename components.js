@@ -12,7 +12,7 @@ class Header extends HTMLElement {
     }
 
     connectedCallback() {
-        // Asumiendo que las imágenes se movieron a una carpeta 'images' en la raíz.
+        // Rutas corregidas para la estructura plana (images/ en la raíz)
         this.innerHTML = `
         <header>
             <div class="logo">
@@ -76,7 +76,7 @@ customElements.define('main-footer', Footer);
 // 2. FUNCIÓN DE CONEXIÓN A LA MATRIZ (data.json)
 // =================================================================
 
-// SOLUCION FINAL: Se usa la ruta absoluta que apunta al archivo en la raíz del repositorio.
+// RUTA FINAL: Asumiendo data.json está en la raíz del repositorio
 const JSON_URL = '/GeoFinance-Intel/data.json';
 
 function loadAnalysis() {
@@ -89,24 +89,35 @@ function loadAnalysis() {
             return response.json();
         })
         .then(data => {
-            // Verifica que el JSON tenga los datos esperados
-            if (!data || !data.maximo_contagio || !data.minimo_contagio) {
-                throw new Error('El archivo JSON está vacío o tiene un formato inválido.');
+            // VERIFICACIÓN Y ADAPTACIÓN AL NUEVO FORMATO JSON
+
+            if (!data || !data.resumen_maximo) {
+                throw new Error('El archivo JSON está vacío o tiene un formato inválido (resumen_maximo faltante).');
             }
 
             // 1. Actualizar el panel de alerta crítica (Máximo Contagio)
-            document.getElementById('resumen-maximo-data').textContent = data.maximo_contagio.valor;
-            document.getElementById('pares-afectados-data').textContent = data.maximo_contagio.pares;
+            // Extraer el valor de correlación (ej. 0.64) del string "Chile (Peso) y Colombia (Peso) (0.64)"
+            const maximoMatch = data.resumen_maximo.match(/\((\d+\.\d+)\)/);
+            const maximoValor = maximoMatch ? maximoMatch[1] : 'N/A';
+            const paresAfectados = data.resumen_maximo.replace(maximoMatch ? maximoMatch[0] : '', '').trim();
+
+            document.getElementById('resumen-maximo-data').textContent = maximoValor;
+            document.getElementById('pares-afectados-data').textContent = paresAfectados;
 
             // 2. Actualizar el panel de blindaje (Mínimo Contagio / Cobertura)
-            document.getElementById('correlacion-minima-data').textContent = data.minimo_contagio.pares_cobertura;
-            document.getElementById('pares-cobertura-data').textContent = `Correlación: ${data.minimo_contagio.valor_correlacion}`;
+            document.getElementById('correlacion-minima-data').textContent = data.correlacion_minima; // Chile (Peso) vs. Cobre Futuros (-0.13)
+            document.getElementById('pares-cobertura-data').textContent = `Correlación: ${data.correlacion_minima.split('(')[1].replace(')', '')}`;
 
             // 3. Actualizar fecha de actualización
-            document.getElementById('fecha-actualizacion').textContent = `Última Actualización: ${data.fecha_actualizacion}`;
+            document.getElementById('fecha-actualizacion').textContent = `Última Actualización: ${data.ultima_actualizacion}`;
 
             // 4. Renderizar el gráfico 3D Force-Graph (NEXUS)
-            renderNexusGraph(data.nexus_data);
+            // Adaptar las claves nexus_nodes y nexus_links al formato que ForceGraph espera (id y value)
+            const adaptedNexusData = {
+                nodes: data.nexus_nodes.map(n => ({ id: n.id, name: n.name, group: 1 })),
+                links: data.nexus_links.map(l => ({ source: l.source, target: l.target, value: l.correlation }))
+            };
+            renderNexusGraph(adaptedNexusData);
 
             console.log("Dashboard cargado exitosamente.");
 
@@ -136,7 +147,6 @@ function renderNexusGraph(graphData) {
     const elem = document.getElementById('nexus-target');
     const ForceGraph3D = window.ForceGraph3D;
 
-    // Si la función ForceGraph3D no se cargó, salimos
     if (typeof ForceGraph3D !== 'function') {
         console.error("ForceGraph3D no cargó correctamente.");
         elem.innerHTML = '<p style="text-align: center; color: #888; padding-top: 200px;">Error al cargar visualización 3D.</p>';
@@ -147,13 +157,13 @@ function renderNexusGraph(graphData) {
         .graphData(graphData)
         .nodeLabel('id')
         .nodeAutoColorBy('group')
-        .linkWidth(link => link.value * 5)
+        .linkWidth(link => Math.abs(link.value) * 5) // Usar el valor absoluto de correlación
         .linkOpacity(0.5)
         .linkDirectionalArrowLength(3.5)
         .linkDirectionalArrowRelPos(1)
         .linkCurvature(0.25)
-        .linkAutoColorBy(link => link.value) // Colorear por valor de correlación
-        .backgroundColor('#0d0d0d'); // Fondo oscuro
+        .linkAutoColorBy(link => link.value)
+        .backgroundColor('#0d0d0d');
 }
 
 
