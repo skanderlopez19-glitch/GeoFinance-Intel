@@ -96,17 +96,17 @@ function loadAnalysis() {
             }
 
             // 1. Actualizar el panel de alerta crítica (Máximo Contagio)
-            // Extraer el valor de correlación (ej. 0.64) del string "Riesgo Máximo: Chile (Peso) y Colombia (Peso) (0.64)"
-            const maximoMatch = data.resumen_maximo.match(/\((\-?\d+\.\d+)\)/); // Busca el patrón de número entre paréntesis
-            const maximoValor = maximoMatch ? maximoMatch[1] : 'N/A'; // Captura solo el número
-            // Quita "Riesgo Máximo:" y el valor entre paréntesis para dejar solo los pares
+            // Lógica con RegEx para extraer el número entre paréntesis
+            const maximoMatch = data.resumen_maximo.match(/\((\-?\d+\.\d+)\)/);
+            const maximoValor = maximoMatch ? maximoMatch[1] : 'N/A';
+            // Quita "Riesgo Máximo:" y el valor entre paréntesis para dejar solo los pares afectados
             const paresAfectados = data.resumen_maximo.replace(maximoMatch ? maximoMatch[0] : '', '').replace('Riesgo Máximo:', '').trim();
 
             document.getElementById('resumen-maximo-data').textContent = maximoValor;
             document.getElementById('pares-afectados-data').textContent = paresAfectados;
 
             // 2. Actualizar el panel de blindaje (Mínimo Contagio / Cobertura)
-            // Extraer el valor de correlación (ej. -0.13) del string "Chile (Peso) vs. Cobre Futuros (-0.13)"
+            // Lógica con RegEx para extraer el número entre paréntesis
             const minimoMatch = data.correlacion_minima.match(/\((\-?\d+\.\d+)\)/);
             // Quita el valor entre paréntesis para dejar solo el par de cobertura
             const paresCobertura = data.correlacion_minima.replace(minimoMatch ? minimoMatch[0] : '', '').trim();
@@ -163,7 +163,7 @@ function renderNexusGraph(graphData) {
         .graphData(graphData)
         .nodeLabel('id')
         .nodeAutoColorBy('group')
-        .linkWidth(link => Math.abs(link.value) * 5) // Usar el valor absoluto de correlación
+        .linkWidth(link => Math.abs(link.value) * 5)
         .linkOpacity(0.5)
         .linkDirectionalArrowLength(3.5)
         .linkDirectionalArrowRelPos(1)
