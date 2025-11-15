@@ -6,17 +6,18 @@
 // a. Main Header Component
 // ----------------------------------------------------
 
+// En components.js
+
 class Header extends HTMLElement {
     constructor() {
         super();
     }
 
     connectedCallback() {
-        // CORRECCIÓN FINAL DE RUTA DEL LOGO (Asumiendo que está en la raíz)
+        // CORRECCIÓN FINAL: Se eliminó la etiqueta <img /> ya que el archivo logo-geofinance.png no existe.
         this.innerHTML = `
         <header>
             <div class="logo">
-                <img src="/GeoFinance-Intel/logo-geofinance.png" alt="GeoFinance Intel Logo">
                 <h1>GEOFINANCE INTEL</h1>
             </div>
             <nav>
